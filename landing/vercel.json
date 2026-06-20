@@ -6,13 +6,11 @@
   "rewrites": [
     { "source": "/", "destination": "/index.html" }
   ],
-  "headers": [
+  "redirects": [
     {
       "source": "/temptations-cafe.apk",
-      "headers": [
-        { "key": "Content-Type", "value": "application/vnd.android.package-archive" },
-        { "key": "Content-Disposition", "value": "attachment; filename=\"temptations-cafe.apk\"" }
-      ]
+      "destination": "https://github.com/MohammedAnas21/Temptation/releases/download/v1.0.0/temptations-cafe.apk",
+      "permanent": false
     }
   ]
 }
