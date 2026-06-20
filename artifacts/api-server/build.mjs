@@ -1,3 +1,8 @@
+if (process.env.VERCEL) {
+  console.log("✓ Vercel build skipped (using pre-built api/index.js)");
+  process.exit(0);
+}
+
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
