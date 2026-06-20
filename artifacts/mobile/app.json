@@ -10,8 +10,8 @@
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash_bg.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#0D3321"
+      "resizeMode": "contain",
+      "backgroundColor": "#031E0F"
     },
     "ios": {
       "supportsTablet": false,
@@ -19,7 +19,7 @@
     },
     "android": {
       "package": "com.temptations.cafe",
-      "backgroundColor": "#0D3321"
+      "backgroundColor": "#031E0F"
     },
     "web": {
       "favicon": "./assets/images/icon.png"
