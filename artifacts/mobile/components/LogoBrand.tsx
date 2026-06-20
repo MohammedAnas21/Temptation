@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
 
 type Variant = "full" | "header" | "mini";
@@ -76,12 +77,12 @@ const styles = StyleSheet.create({
   },
   miniName: {
     fontSize: 14,
-    fontWeight: "900",
+    fontFamily: fonts.display[900],
     letterSpacing: 2,
   },
   miniTagline: {
-    fontSize: 9,
-    fontStyle: "italic",
+    fontSize: 12,
+    fontFamily: fonts.script,
     letterSpacing: 0.3,
   },
   headerWrap: {
@@ -96,12 +97,12 @@ const styles = StyleSheet.create({
   },
   headerName: {
     fontSize: 16,
-    fontWeight: "900",
+    fontFamily: fonts.display[900],
     letterSpacing: 2.5,
   },
   headerTagline: {
-    fontSize: 10,
-    fontStyle: "italic",
+    fontSize: 13,
+    fontFamily: fonts.script,
     letterSpacing: 0.3,
   },
 });

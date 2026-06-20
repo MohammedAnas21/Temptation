@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import fonts from "@/constants/fonts";
 import { useLayout } from "@/hooks/useLayout";
 
 interface Offer {
@@ -62,8 +63,8 @@ const styles = StyleSheet.create({
   },
   accentLine: { width: 4, borderRadius: 4 },
   content: { flex: 1, padding: 14 },
-  title: { color: "#fff", fontWeight: "800", marginBottom: 4 },
-  subtitle: { color: "rgba(255,255,255,0.75)", lineHeight: 17, marginBottom: 10 },
+  title: { color: "#fff", fontFamily: fonts.display[800], marginBottom: 4 },
+  subtitle: { color: "rgba(255,255,255,0.75)", fontFamily: fonts.body[400], lineHeight: 17, marginBottom: 10 },
   footer: { gap: 6 },
   codePill: {
     flexDirection: "row",
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     alignSelf: "flex-start",
   },
-  code: { fontWeight: "700", letterSpacing: 0.5 },
+  code: { fontFamily: fonts.mono[700], letterSpacing: 0.5 },
   timeRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  time: { fontSize: 10, color: "rgba(255,255,255,0.5)" },
+  time: { fontSize: 10, fontFamily: fonts.body[400], color: "rgba(255,255,255,0.5)" },
 });

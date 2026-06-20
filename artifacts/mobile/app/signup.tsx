@@ -15,39 +15,68 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import fonts from "@/constants/fonts";
-import { DEMO_CREDENTIALS, useUser } from "@/contexts/UserContext";
+import { useUser } from "@/contexts/UserContext";
 import { useColors } from "@/hooks/useColors";
 import { useLayout } from "@/hooks/useLayout";
 
-export default function LoginScreen() {
+export default function SignupScreen() {
   const colors = useColors();
   const layout = useLayout();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { login } = useUser();
+  const { signup } = useUser();
 
-  const [identifier, setIdentifier] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const topPad = Platform.OS === "web" ? 60 : insets.top;
   const bottomPad = Platform.OS === "web" ? 40 : insets.bottom;
 
-  const handleLogin = async () => {
-    if (!identifier.trim()) {
-      Alert.alert("Input Required", "Please enter your email or mobile number.");
-      return;
+  const validate = () => {
+    if (!name.trim()) {
+      Alert.alert("Name Required", "Please enter your full name.");
+      return false;
     }
-    if (!password) {
-      Alert.alert("Password Required", "Please enter your password.");
-      return;
+    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      Alert.alert("Valid Email Required", "Please enter a valid email address.");
+      return false;
     }
-    const success = await login(identifier.trim(), password);
+    if (phone.replace(/\D/g, "").length < 10) {
+      Alert.alert("Valid Mobile Required", "Please enter a valid 10-digit mobile number.");
+      return false;
+    }
+    if (!password || password.length < 6) {
+      Alert.alert("Password Too Short", "Password must be at least 6 characters.");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert("Passwords Don't Match", "Please make sure both passwords match.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSignup = async () => {
+    if (!validate()) return;
+    const success = await signup(
+      { name: name.trim(), email: email.trim().toLowerCase(), phone },
+      password,
+    );
     if (success) {
       router.replace("/(tabs)");
     } else {
-      Alert.alert("Login Failed", "Invalid credentials. Please check and try again.");
+      Alert.alert("Signup Failed", "Could not create your account. Please try again.");
     }
+  };
+
+  const inputProps = {
+    placeholderTextColor: colors.mutedForeground,
+    style: [styles.input, { color: colors.foreground, backgroundColor: colors.muted, borderColor: colors.border }],
   };
 
   return (
@@ -70,7 +99,7 @@ export default function LoginScreen() {
 
       <ScrollView
         contentContainerStyle={{
-          paddingTop: topPad + 32,
+          paddingTop: topPad + 24,
           paddingBottom: bottomPad + 24,
           paddingHorizontal: 20,
           maxWidth: layout.contentW,
@@ -90,28 +119,46 @@ export default function LoginScreen() {
         </View>
 
         <View style={[styles.card, { backgroundColor: colors.card + "F0", borderColor: colors.border }]}>
-          <Text style={[styles.cardTitle, { color: colors.foreground }]}>Sign In</Text>
+          <Text style={[styles.cardTitle, { color: colors.foreground }]}>Create Account</Text>
           <Text style={[styles.cardSub, { color: colors.mutedForeground }]}>
-            Use your email or mobile number to sign in
+            Enter your details to get started
           </Text>
 
-          <View style={[styles.inputRow, { borderColor: colors.border, backgroundColor: colors.muted }]}>
-            <Feather name="user" size={18} color={colors.mutedForeground} style={styles.inputIcon} />
+          <TextInput
+            {...inputProps}
+            placeholder="Full name"
+            value={name}
+            onChangeText={setName}
+            autoCapitalize="words"
+          />
+
+          <TextInput
+            {...inputProps}
+            placeholder="Email address"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+
+          <View style={[styles.phoneRow, { borderColor: colors.border, backgroundColor: colors.muted }]}>
+            <View style={[styles.flag, { borderRightColor: colors.border }]}>
+              <Text style={styles.flagText}>🇮🇳 +91</Text>
+            </View>
             <TextInput
-              style={[styles.input, { color: colors.foreground }]}
-              placeholder="Email or mobile number"
+              style={[styles.phoneInput, { color: colors.foreground }]}
+              placeholder="Mobile number"
               placeholderTextColor={colors.mutedForeground}
-              value={identifier}
-              onChangeText={setIdentifier}
-              autoCapitalize="none"
-              keyboardType="email-address"
+              keyboardType="phone-pad"
+              maxLength={10}
+              value={phone}
+              onChangeText={setPhone}
             />
           </View>
 
-          <View style={[styles.inputRow, { borderColor: colors.border, backgroundColor: colors.muted }]}>
-            <Feather name="lock" size={18} color={colors.mutedForeground} style={styles.inputIcon} />
+          <View style={[styles.passwordRow, { borderColor: colors.border, backgroundColor: colors.muted }]}>
             <TextInput
-              style={[styles.input, { color: colors.foreground }]}
+              style={[styles.passwordInput, { color: colors.foreground }]}
               placeholder="Password"
               placeholderTextColor={colors.mutedForeground}
               secureTextEntry={!showPassword}
@@ -123,42 +170,35 @@ export default function LoginScreen() {
             </Pressable>
           </View>
 
-          <Pressable onPress={handleLogin} style={[styles.primaryBtn, { backgroundColor: colors.gold }]}>
-            <Text style={styles.primaryBtnText}>Sign In</Text>
+          <View style={[styles.passwordRow, { borderColor: colors.border, backgroundColor: colors.muted }]}>
+            <TextInput
+              style={[styles.passwordInput, { color: colors.foreground }]}
+              placeholder="Confirm password"
+              placeholderTextColor={colors.mutedForeground}
+              secureTextEntry={!showConfirm}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+            <Pressable onPress={() => setShowConfirm((s) => !s)} style={styles.eyeBtn}>
+              <Feather name={showConfirm ? "eye-off" : "eye"} size={18} color={colors.mutedForeground} />
+            </Pressable>
+          </View>
+
+          <Pressable onPress={handleSignup} style={[styles.primaryBtn, { backgroundColor: colors.gold }]}>
+            <Text style={styles.primaryBtnText}>Sign Up</Text>
             <Feather name="arrow-right" size={18} color="#000" />
           </Pressable>
 
-          <Pressable onPress={() => router.push("/signup")} style={styles.switchRow}>
+          <Pressable onPress={() => router.push("/login")} style={styles.switchRow}>
             <Text style={[styles.switchText, { color: colors.mutedForeground }]}>
-              New here? <Text style={{ color: colors.gold }}>Create an account</Text>
+              Already have an account? <Text style={{ color: colors.gold }}>Sign In</Text>
             </Text>
           </Pressable>
-
-          <View style={styles.demoBox}>
-            <Text style={[styles.demoLabel, { color: colors.mutedForeground }]}>
-              Try without signing up
-            </Text>
-            <Pressable
-              onPress={() => {
-                setIdentifier(DEMO_CREDENTIALS.email);
-                setPassword(DEMO_CREDENTIALS.password);
-              }}
-              style={[styles.demoBtn, { borderColor: colors.border }]}
-            >
-              <Feather name="smartphone" size={14} color={colors.gold} />
-              <Text style={[styles.demoBtnText, { color: colors.foreground }]}>
-                Use demo account
-              </Text>
-            </Pressable>
-            <Text style={[styles.demoHint, { color: colors.mutedForeground }]}>
-              {DEMO_CREDENTIALS.email} / {DEMO_CREDENTIALS.password}
-            </Text>
-          </View>
         </View>
 
         <View style={[styles.bottomNote, { paddingBottom: bottomPad + 16 }]}>
           <Text style={[styles.bottomNoteText, { color: colors.mutedForeground }]}>
-            By continuing, you agree to our Terms & Privacy Policy
+            By signing up, you agree to our Terms & Privacy Policy
           </Text>
         </View>
       </ScrollView>
@@ -188,8 +228,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  logoWrap: { alignItems: "center", paddingBottom: 32 },
-  logoImage: { width: 160, height: 160, borderRadius: 20 },
+  logoWrap: { alignItems: "center", paddingBottom: 24 },
+  logoImage: { width: 140, height: 140, borderRadius: 20 },
   logoSub: { fontSize: 13, marginTop: 8, fontFamily: fonts.script, fontStyle: "italic" },
   card: {
     borderRadius: 20,
@@ -198,17 +238,41 @@ const styles = StyleSheet.create({
   },
   cardTitle: { fontSize: 24, fontFamily: fonts.display[900], marginBottom: 6 },
   cardSub: { fontSize: 14, fontFamily: fonts.body[400], lineHeight: 20, marginBottom: 24 },
-  inputRow: {
+  input: {
+    borderRadius: 14,
+    borderWidth: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 15,
+    fontFamily: fonts.body[400],
+    marginBottom: 14,
+  },
+  phoneRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 14,
+    borderWidth: 1,
+    overflow: "hidden",
+    marginBottom: 14,
+  },
+  flag: {
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    borderRightWidth: 1,
+  },
+  flagText: { fontSize: 14, fontFamily: fonts.body[600] },
+  phoneInput: { flex: 1, paddingHorizontal: 14, paddingVertical: 14, fontSize: 15, fontFamily: fonts.body[400] },
+  passwordRow: {
     flexDirection: "row",
     alignItems: "center",
     borderRadius: 14,
     borderWidth: 1,
     marginBottom: 14,
-    paddingHorizontal: 14,
+    paddingRight: 12,
   },
-  inputIcon: { marginRight: 10 },
-  input: {
+  passwordInput: {
     flex: 1,
+    paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 15,
     fontFamily: fonts.body[400],
@@ -228,17 +292,4 @@ const styles = StyleSheet.create({
   switchText: { fontSize: 14, fontFamily: fonts.body[400] },
   bottomNote: { alignItems: "center", paddingTop: 20 },
   bottomNoteText: { fontSize: 11, fontFamily: fonts.body[400], textAlign: "center" },
-  demoBox: { marginTop: 20, alignItems: "center", gap: 8 },
-  demoLabel: { fontSize: 12, fontFamily: fonts.body[400] },
-  demoBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    borderWidth: 1,
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-  },
-  demoBtnText: { fontSize: 14, fontFamily: fonts.body[600] },
-  demoHint: { fontSize: 11, fontFamily: fonts.body[400], textAlign: "center" },
 });

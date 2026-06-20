@@ -23,422 +23,135 @@ export interface Category {
 
 export const categories: Category[] = [
   { id: "all", label: "All", icon: "grid" },
-  { id: "burgers", label: "Burgers", icon: "circle" },
+  { id: "cold-coffee", label: "Cold Coffee", icon: "coffee" },
+  { id: "hot-coffee", label: "Hot Coffee", icon: "coffee" },
   { id: "pizza", label: "Pizza", icon: "disc" },
-  { id: "momos", label: "Momos", icon: "package" },
+  { id: "shakes", label: "Shakes", icon: "droplet" },
+  { id: "mojitos", label: "Mojitos", icon: "wind" },
+  { id: "burgers", label: "Burgers", icon: "circle" },
   { id: "wraps", label: "Wraps", icon: "rotate-cw" },
-  { id: "chicken", label: "Chicken", icon: "star" },
-  { id: "coffee", label: "Coffee", icon: "coffee" },
-  { id: "mojitos", label: "Mojitos", icon: "droplet" },
-  { id: "desserts", label: "Desserts", icon: "heart" },
+  { id: "sandwiches", label: "Sandwiches", icon: "square" },
+  { id: "fries", label: "Fries", icon: "star" },
+  { id: "chicken", label: "Chicken", icon: "award" },
+  { id: "veg-starters", label: "Veg Starters", icon: "heart" },
+  { id: "waffles", label: "Waffles", icon: "sun" },
 ];
 
 export const menuItems: MenuItem[] = [
-  {
-    id: "b1",
-    name: "Zinger Burger",
-    description:
-      "Our most-loved crispy golden chicken fillet, fresh iceberg lettuce, signature tangy sauce in a toasted sesame bun. Voted best in Kalaburagi.",
-    price: 199,
-    calories: 480,
-    category: "burgers",
-    image: require("@/assets/images/burger.png"),
-    isPopular: true,
-    isFeatured: true,
-    isBestSeller: true,
-    badge: "Fan Favourite",
-    rating: 4.9,
-    addOns: [
-      { name: "Extra Cheese Slice", price: 30 },
-      { name: "Jalapeños", price: 20 },
-      { name: "Extra Sauce", price: 15 },
-      { name: "Add Egg", price: 25 },
-    ],
-  },
-  {
-    id: "b2",
-    name: "Temptation Special Burger",
-    description:
-      "Double crispy patty with caramelised onion, premium cheese, jalapeños and our house secret sauce. A flavour explosion in every bite.",
-    price: 269,
-    calories: 620,
-    category: "burgers",
-    image: require("@/assets/images/burger.png"),
-    isFeatured: true,
-    badge: "Chef's Pick",
-    rating: 4.7,
-    addOns: [
-      { name: "Extra Patty", price: 60 },
-      { name: "Cheese Sauce", price: 30 },
-      { name: "Caramelised Onion", price: 20 },
-    ],
-  },
-  {
-    id: "b3",
-    name: "Classic Chicken Burger",
-    description:
-      "Juicy grilled chicken, fresh garden veggies, tangy mayo on a soft brioche bun. Simple, satisfying, and consistently great.",
-    price: 169,
-    calories: 420,
-    category: "burgers",
-    image: require("@/assets/images/burger.png"),
-    rating: 4.5,
-    addOns: [
-      { name: "Add Cheese", price: 25 },
-      { name: "Extra Sauce", price: 15 },
-    ],
-  },
-  {
-    id: "b4",
-    name: "Double Smash Burger",
-    description:
-      "Two smashed beef patties with American cheese, crunchy pickles and our signature smash sauce. Maximum flavour, minimum compromise.",
-    price: 319,
-    calories: 720,
-    category: "burgers",
-    image: require("@/assets/images/burger.png"),
-    badge: "New",
-    rating: 4.6,
-    addOns: [
-      { name: "Triple Patty Upgrade", price: 80 },
-      { name: "Bacon Add-on", price: 50 },
-      { name: "Truffle Sauce", price: 35 },
-    ],
-  },
-  {
-    id: "p1",
-    name: "Cheese Burst Pizza",
-    description:
-      "A crust stuffed to bursting with molten cheese, topped with fresh mozzarella and rich tomato base. Every slice delivers an irresistible cheese pull.",
-    price: 349,
-    calories: 780,
-    category: "pizza",
-    image: require("@/assets/images/pizza.png"),
-    isFeatured: true,
-    isBestSeller: true,
-    rating: 4.8,
-    addOns: [
-      { name: "Extra Cheese Topping", price: 50 },
-      { name: "Olives", price: 30 },
-      { name: "Jalapeños", price: 25 },
-    ],
-  },
-  {
-    id: "p2",
-    name: "Chicken BBQ Pizza",
-    description:
-      "Smoky BBQ-glazed chicken chunks, roasted bell peppers, red onion rings on a generous mozzarella base. Smoky perfection.",
-    price: 319,
-    calories: 710,
-    category: "pizza",
-    image: require("@/assets/images/pizza.png"),
-    isPopular: true,
-    rating: 4.6,
-    addOns: [
-      { name: "Extra Chicken", price: 60 },
-      { name: "BBQ Drizzle", price: 20 },
-    ],
-  },
-  {
-    id: "p3",
-    name: "Margherita",
-    description:
-      "The timeless classic. Fresh basil leaves, premium mozzarella di bufala and vibrant San Marzano tomato sauce on a thin crispy base.",
-    price: 249,
-    calories: 580,
-    category: "pizza",
-    image: require("@/assets/images/pizza.png"),
-    isVeg: true,
-    rating: 4.4,
-    addOns: [
-      { name: "Herb Garlic Drizzle", price: 20 },
-      { name: "Extra Basil", price: 10 },
-    ],
-  },
-  {
-    id: "m1",
-    name: "Steamed Momos",
-    description:
-      "Delicate hand-folded dumplings filled with seasoned minced chicken, served piping hot with our fiery chili-garlic dipping sauce.",
-    price: 149,
-    calories: 280,
-    category: "momos",
-    image: require("@/assets/images/momos.png"),
-    isPopular: true,
-    rating: 4.5,
-    addOns: [
-      { name: "Extra Dipping Sauce", price: 20 },
-      { name: "Upgrade to 9pcs", price: 40 },
-    ],
-  },
-  {
-    id: "m2",
-    name: "Fried Momos",
-    description:
-      "Golden pan-fried dumplings, crunchy on the outside, juicy on the inside. Served with our signature spicy red chili sauce.",
-    price: 169,
-    calories: 340,
-    category: "momos",
-    image: require("@/assets/images/momos.png"),
-    isFeatured: true,
-    rating: 4.6,
-    addOns: [
-      { name: "Schezwan Sauce", price: 20 },
-      { name: "Upgrade to 9pcs", price: 40 },
-    ],
-  },
-  {
-    id: "m3",
-    name: "Tandoori Momos",
-    description:
-      "Marinated in tikka spices and char-grilled in our tandoor, these smoky dumplings with mint chutney are an absolute crowd-pleaser.",
-    price: 199,
-    calories: 360,
-    category: "momos",
-    image: require("@/assets/images/momos.png"),
-    badge: "Spicy",
-    rating: 4.7,
-    addOns: [
-      { name: "Cheese Dip", price: 30 },
-      { name: "Mint Chutney Extra", price: 15 },
-    ],
-  },
-  {
-    id: "w1",
-    name: "Chicken Wrap",
-    description:
-      "Tender grilled chicken strips, crisp lettuce, diced tomatoes, and our house cheese sauce wrapped tightly in a warm soft tortilla.",
-    price: 179,
-    calories: 390,
-    category: "wraps",
-    image: require("@/assets/images/wrap.png"),
-    isPopular: true,
-    isBestSeller: true,
-    rating: 4.6,
-    addOns: [
-      { name: "Extra Cheese", price: 30 },
-      { name: "Upgrade to Double Filling", price: 50 },
-    ],
-  },
-  {
-    id: "w2",
-    name: "Zinger Wrap",
-    description:
-      "The beloved zinger fillet wrapped with our house coleslaw, pickles and signature sauce. All the zinger goodness in one neat wrap.",
-    price: 199,
-    calories: 430,
-    category: "wraps",
-    image: require("@/assets/images/wrap.png"),
-    rating: 4.5,
-    addOns: [
-      { name: "Extra Zinger Fillet", price: 60 },
-      { name: "Coleslaw Extra", price: 20 },
-    ],
-  },
-  {
-    id: "c1",
-    name: "Chicken Popcorn",
-    description:
-      "Bite-sized pieces of premium chicken breast, coated in our secret spice blend and fried to golden perfection. Impossibly addictive.",
-    price: 179,
-    calories: 380,
-    category: "chicken",
-    image: require("@/assets/images/popcorn.png"),
-    isPopular: true,
-    isFeatured: true,
-    isBestSeller: true,
-    badge: "Fan Favourite",
-    rating: 4.8,
-    addOns: [
-      { name: "Cheese Dipping Sauce", price: 30 },
-      { name: "Extra Spicy Upgrade", price: 10 },
-      { name: "Large Portion (300g)", price: 60 },
-    ],
-  },
-  {
-    id: "c2",
-    name: "Chicken Wings",
-    description:
-      "Slow-marinated, oven-roasted then fried to perfection. Choose from BBQ, Buffalo or Honey Garlic. Served with ranch dipping sauce.",
-    price: 249,
-    calories: 520,
-    category: "chicken",
-    image: require("@/assets/images/wings.png"),
-    isPopular: true,
-    badge: "Must Try",
-    rating: 4.7,
-    addOns: [
-      { name: "BBQ Flavour", price: 0 },
-      { name: "Buffalo Flavour", price: 0 },
-      { name: "Honey Garlic Flavour", price: 0 },
-      { name: "Extra Ranch Dip", price: 20 },
-    ],
-  },
-  {
-    id: "c3",
-    name: "Chicken Strips",
-    description:
-      "Premium breast strips hand-battered in panko crumbs, fried until perfectly crisp. Served with your choice of dipping sauce.",
-    price: 219,
-    calories: 460,
-    category: "chicken",
-    image: require("@/assets/images/popcorn.png"),
-    rating: 4.5,
-    addOns: [
-      { name: "BBQ Sauce", price: 15 },
-      { name: "Cheese Sauce", price: 25 },
-      { name: "Large Portion", price: 50 },
-    ],
-  },
-  {
-    id: "cf1",
-    name: "Cappuccino",
-    description:
-      "Perfectly balanced double-shot espresso with velvety steamed milk and a thick, creamy foam artisan pour. A cafe classic done right.",
-    price: 129,
-    calories: 120,
-    category: "coffee",
-    image: require("@/assets/images/coffee.png"),
-    isVeg: true,
-    rating: 4.4,
-    addOns: [
-      { name: "Extra Shot", price: 30 },
-      { name: "Oat Milk", price: 20 },
-    ],
-  },
-  {
-    id: "cf2",
-    name: "Cold Coffee",
-    description:
-      "Double-shot cold brew blended with premium fresh cream and crushed ice. Smooth, bold and refreshingly cold. A hot day's best friend.",
-    price: 149,
-    calories: 180,
-    category: "coffee",
-    image: require("@/assets/images/coffee.png"),
-    isPopular: true,
-    isVeg: true,
-    rating: 4.6,
-    addOns: [
-      { name: "Extra Shot", price: 30 },
-      { name: "Vanilla Syrup", price: 20 },
-      { name: "Whipped Cream", price: 20 },
-    ],
-  },
-  {
-    id: "cf3",
-    name: "Caramel Latte",
-    description:
-      "Smooth espresso meets steamed whole milk with a generous drizzle of our house-made caramel. Comforting and indulgent.",
-    price: 159,
-    calories: 210,
-    category: "coffee",
-    image: require("@/assets/images/coffee.png"),
-    isVeg: true,
-    rating: 4.5,
-    addOns: [
-      { name: "Extra Caramel", price: 15 },
-      { name: "Extra Shot", price: 30 },
-    ],
-  },
-  {
-    id: "mj1",
-    name: "Temptation Special Mojito",
-    description:
-      "Our signature creation — an exotic blend of seasonal fruits, freshly muddled mint leaves, premium sparkling water and a generous squeeze of fresh lime. Truly unique.",
-    price: 179,
-    calories: 160,
-    category: "mojitos",
-    image: require("@/assets/images/mojito.png"),
-    isPopular: true,
-    isFeatured: true,
-    isBestSeller: true,
-    badge: "Signature",
-    isVeg: true,
-    rating: 4.9,
-    addOns: [
-      { name: "Extra Mint", price: 10 },
-      { name: "Sparkling Water Upgrade", price: 20 },
-    ],
-  },
-  {
-    id: "mj2",
-    name: "Blue Lagoon Mojito",
-    description:
-      "Visually stunning electric blue curacao, fresh lime juice, muddled mint and premium soda. As beautiful as it is delicious.",
-    price: 169,
-    calories: 150,
-    category: "mojitos",
-    image: require("@/assets/images/mojito.png"),
-    isVeg: true,
-    badge: "Popular",
-    rating: 4.7,
-    addOns: [
-      { name: "Salt Rim", price: 10 },
-      { name: "Extra Lime", price: 10 },
-    ],
-  },
-  {
-    id: "mj3",
-    name: "Virgin Mojito",
-    description:
-      "The classic. Fresh-squeezed lime, demerara sugar syrup, a generous handful of mint, topped with premium soda water. Pure, fresh, perfect.",
-    price: 149,
-    calories: 130,
-    category: "mojitos",
-    image: require("@/assets/images/mojito.png"),
-    isVeg: true,
-    rating: 4.5,
-    addOns: [
-      { name: "Strawberry Twist", price: 20 },
-      { name: "Passion Fruit Twist", price: 20 },
-    ],
-  },
-  {
-    id: "mj4",
-    name: "Strawberry Mojito",
-    description:
-      "Sun-ripened strawberries muddled with fresh basil, lime and mint, topped with sparkling soda. Summer captured in a glass.",
-    price: 179,
-    calories: 165,
-    category: "mojitos",
-    image: require("@/assets/images/mojito.png"),
-    isVeg: true,
-    rating: 4.6,
-  },
-  {
-    id: "d1",
-    name: "Chocolate Brownie",
-    description:
-      "Warm, gooey fudge brownie served with a generous scoop of vanilla ice cream and rich chocolate sauce drizzle. Absolute indulgence.",
-    price: 129,
-    calories: 480,
-    category: "desserts",
-    image: require("@/assets/images/hero_banner.png"),
-    isVeg: true,
-    isPopular: true,
-    rating: 4.7,
-    addOns: [
-      { name: "Extra Ice Cream Scoop", price: 40 },
-      { name: "Caramel Sauce", price: 20 },
-    ],
-  },
-  {
-    id: "d2",
-    name: "Ice Cream Sundae",
-    description:
-      "Three generous scoops of your choice, topped with hot fudge, whipped cream and a cherry. The classic done perfectly.",
-    price: 99,
-    calories: 380,
-    category: "desserts",
-    image: require("@/assets/images/hero_banner.png"),
-    isVeg: true,
-    rating: 4.4,
-    addOns: [
-      { name: "Extra Scoop", price: 30 },
-      { name: "Chocolate Sauce", price: 15 },
-      { name: "Sprinkles", price: 10 },
-    ],
-  },
+  // ── Cold Coffee ──
+  { id: "cc1", name: "Classic Cold Coffee", description: "Chilled, creamy and perfectly sweetened — the classic cold coffee that started it all. Refreshingly smooth with every sip.", price: 100, calories: 160, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isPopular: true, isVeg: true, rating: 4.5, addOns: [{ name: "Extra Shot", price: 30 }, { name: "Whipped Cream", price: 20 }] },
+  { id: "cc2", name: "Cold Coffee Double Shot", description: "Double the espresso, double the kick. For those who like their cold coffee bold and strong.", price: 120, calories: 180, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.6, addOns: [{ name: "Extra Shot", price: 30 }, { name: "Vanilla Syrup", price: 20 }] },
+  { id: "cc3", name: "Cold Coffee By Two", description: "A generous pitcher of our signature cold coffee — perfect for sharing with a friend.", price: 140, calories: 320, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.4 },
+  { id: "cc4", name: "Cold Coffee With Ice Cream", description: "Our classic cold coffee topped with a generous scoop of vanilla ice cream. Dessert and drink in one.", price: 140, calories: 280, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isFeatured: true, isVeg: true, rating: 4.7, badge: "Trending" },
+  { id: "cc5", name: "Choco Cold Coffee", description: "Rich chocolate syrup meets creamy cold coffee. A chocolate lover's dream come true.", price: 120, calories: 210, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isPopular: true, isVeg: true, rating: 4.6, addOns: [{ name: "Extra Chocolate Drizzle", price: 20 }] },
+  { id: "cc6", name: "Caramel Cold Coffee", description: "Buttery caramel swirled into chilled coffee perfection. Sweet, bold and utterly satisfying.", price: 130, calories: 200, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.5 },
+  { id: "cc7", name: "Irish Cold Coffee", description: "Smooth Irish cream flavoured cold coffee with a hint of vanilla. An indulgent treat.", price: 130, calories: 200, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.4 },
+  { id: "cc8", name: "Hazelnut Cold Coffee", description: "Nutty hazelnut syrup blended into creamy cold coffee. Aromatic and absolutely delicious.", price: 130, calories: 200, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.5 },
+  { id: "cc9", name: "Cranberry Coffee", description: "Tangy cranberry meets smooth coffee in this unexpectedly delightful fusion. Refreshingly different.", price: 90, calories: 140, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.2, badge: "New" },
+  { id: "cc10", name: "Cranberry Coffee Double Shot", description: "Our popular cranberry coffee with an extra espresso shot for added boldness.", price: 120, calories: 170, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.3 },
+  { id: "cc11", name: "Pomegranate Coffee", description: "Sweet-tart pomegranate juice paired with chilled coffee. A vibrant and refreshing surprise.", price: 100, calories: 150, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.2, badge: "New" },
+  { id: "cc12", name: "Caramel Ice Latte", description: "Chilled latte with a generous drizzle of house-made caramel sauce. Smooth and refreshing.", price: 100, calories: 160, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isPopular: true, isVeg: true, rating: 4.5 },
+  { id: "cc13", name: "Ice Latte", description: "Simple, elegant, and perfectly chilled. Espresso poured over cold milk and ice. A cafe staple.", price: 70, calories: 100, category: "cold-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.3 },
+
+  // ── Hot Coffee ──
+  { id: "hc1", name: "Cappuccino", description: "Perfectly balanced espresso with velvety steamed milk and a thick, creamy foam cap. A timeless classic.", price: 70, calories: 120, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isPopular: true, isVeg: true, rating: 4.5 },
+  { id: "hc2", name: "Cappuccino Double Shot", description: "All the frothy goodness of a cappuccino with twice the espresso kick.", price: 90, calories: 140, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.6 },
+  { id: "hc3", name: "Caramel Cappuccino", description: "Rich caramel syrup meets our signature cappuccino. Sweet, bold and comforting.", price: 100, calories: 160, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.4 },
+  { id: "hc4", name: "Hazelnut Cappuccino", description: "Aromatic hazelnut infused into a creamy cappuccino. Nutty warmth in every sip.", price: 100, calories: 160, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.5 },
+  { id: "hc5", name: "Irish Cappuccino", description: "Irish cream flavoured cappuccino with a delicate vanilla finish. Indulgent and warming.", price: 100, calories: 160, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.4 },
+  { id: "hc6", name: "Cafe Latte", description: "Smooth espresso with steamed milk and a light layer of foam. Mild, creamy and comforting.", price: 70, calories: 130, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.3 },
+  { id: "hc7", name: "Cafe Mocha", description: "Rich chocolate and espresso married with steamed milk. The best of both worlds.", price: 70, calories: 180, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isFeatured: true, isVeg: true, rating: 4.6, badge: "Popular" },
+  { id: "hc8", name: "Hot Chocolate", description: "Rich, velvety hot chocolate made with premium cocoa and steamed milk. Pure comfort in a cup.", price: 70, calories: 190, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.5 },
+  { id: "hc9", name: "Black Coffee", description: "Pure, bold and unapologetic. Single-origin espresso shot served hot. For the purists.", price: 60, calories: 5, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.2 },
+  { id: "hc10", name: "Espresso Shot", description: "A concentrated shot of our premium espresso blend. Intense flavour, big energy.", price: 50, calories: 3, category: "hot-coffee", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.3 },
+
+  // ── Pizza ──
+  { id: "pz1", name: "BBQ Chicken Pizza", description: "Smoky BBQ-glazed chicken chunks with mozzarella and red onions on a hand-tossed base.", price: 220, calories: 680, category: "pizza", image: require("@/assets/images/pizza.png"), isPopular: true, rating: 4.6, addOns: [{ name: "Upgrade to Medium", price: 80 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 50 }] },
+  { id: "pz2", name: "Chicken Mexican Pizza", description: "Spicy Mexican-style chicken with bell peppers, jalapeños, and a kick of chipotle.", price: 230, calories: 700, category: "pizza", image: require("@/assets/images/pizza.png"), rating: 4.5, badge: "Spicy", addOns: [{ name: "Upgrade to Medium", price: 80 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 50 }] },
+  { id: "pz3", name: "Italian Classic Pizza", description: "Traditional Italian toppings with premium mozzarella, olives, and authentic herbs.", price: 250, calories: 650, category: "pizza", image: require("@/assets/images/pizza.png"), isFeatured: true, rating: 4.7, addOns: [{ name: "Upgrade to Medium", price: 100 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 70 }] },
+  { id: "pz4", name: "Chicken Pepperoni Pizza", description: "Classic pepperoni with gooey mozzarella on a crispy crust. A timeless favourite.", price: 220, calories: 720, category: "pizza", image: require("@/assets/images/pizza.png"), isBestSeller: true, rating: 4.8, addOns: [{ name: "Upgrade to Medium", price: 80 }, { name: "Extra Pepperoni", price: 60 }, { name: "Cheese Burst", price: 50 }] },
+  { id: "pz5", name: "Chicken Loaded Pizza", description: "Piled high with every chicken topping we have — BBQ, Mexican, pepperoni and more. For the ultimate meat lover.", price: 250, calories: 820, category: "pizza", image: require("@/assets/images/pizza.png"), rating: 4.7, badge: "Heavy", addOns: [{ name: "Upgrade to Medium", price: 90 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 70 }] },
+  { id: "pz6", name: "Temptation Special Pizza", description: "Our signature creation — the best of everything loaded onto one unforgettable pizza.", price: 290, calories: 850, category: "pizza", image: require("@/assets/images/pizza.png"), isFeatured: true, isBestSeller: true, rating: 4.9, badge: "Signature", addOns: [{ name: "Upgrade to Medium", price: 100 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 70 }] },
+  { id: "pz7", name: "Margherita", description: "The timeless classic. Fresh basil, mozzarella and San Marzano tomato sauce on a thin crispy base.", price: 150, calories: 520, category: "pizza", image: require("@/assets/images/pizza.png"), isVeg: true, rating: 4.4, addOns: [{ name: "Upgrade to Medium", price: 100 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 50 }] },
+  { id: "pz8", name: "Fresh Veggie Pizza", description: "Garden-fresh bell peppers, onions, olives, tomatoes and sweet corn on a bed of mozzarella.", price: 160, calories: 480, category: "pizza", image: require("@/assets/images/pizza.png"), isVeg: true, rating: 4.3, addOns: [{ name: "Upgrade to Medium", price: 80 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 50 }] },
+  { id: "pz9", name: "Cheese & Corn Pizza", description: "Sweet golden corn with a double helping of mozzarella. Simple, vegetarian perfection.", price: 140, calories: 460, category: "pizza", image: require("@/assets/images/pizza.png"), isVeg: true, isPopular: true, rating: 4.5, addOns: [{ name: "Upgrade to Medium", price: 110 }, { name: "Extra Cheese", price: 50 }, { name: "Cheese Burst", price: 50 }] },
+  { id: "pz10", name: "BBQ Paneer Pizza", description: "Smoky BBQ paneer tikka with bell peppers and onions on a cheesy base. A vegetarian showstopper.", price: 190, calories: 540, category: "pizza", image: require("@/assets/images/pizza.png"), isVeg: true, isFeatured: true, rating: 4.6, addOns: [{ name: "Upgrade to Medium", price: 80 }, { name: "Extra Paneer", price: 60 }, { name: "Cheese Burst", price: 50 }] },
+
+  // ── Shakes ──
+  { id: "sh1", name: "Chocolate Milk Shake", description: "Rich chocolate ice cream blended with creamy milk. A timeless classic that never disappoints.", price: 120, calories: 320, category: "shakes", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.5 },
+  { id: "sh2", name: "Strawberry Milk Shake", description: "Fresh strawberry pulp blended with creamy vanilla ice cream. Sweet, fruity and refreshing.", price: 120, calories: 300, category: "shakes", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.4 },
+  { id: "sh3", name: "Kit Kat Milk Shake", description: "Crunchy Kit Kat pieces blended into a creamy milk shake. Every sip is a candy bar moment.", price: 130, calories: 380, category: "shakes", image: require("@/assets/images/coffee.png"), isPopular: true, isVeg: true, rating: 4.6, badge: "Trending" },
+  { id: "sh4", name: "Oreo Milk Shake", description: "Crushed Oreo cookies meet vanilla ice cream in this universally loved shake.", price: 130, calories: 370, category: "shakes", image: require("@/assets/images/coffee.png"), isPopular: true, isVeg: true, rating: 4.7 },
+  { id: "sh5", name: "Brownie Milk Shake", description: "Fudgy brownie chunks blended into thick vanilla shake. Decadence in a glass.", price: 160, calories: 450, category: "shakes", image: require("@/assets/images/coffee.png"), isFeatured: true, isVeg: true, rating: 4.8 },
+  { id: "sh6", name: "Dry Fruit Milk Shake", description: "Premium dry fruits — almonds, cashews, pistachios — blended into a rich, nourishing shake.", price: 170, calories: 400, category: "shakes", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.5 },
+  { id: "sh7", name: "Dry Fruit Milk Shake By Two", description: "A generous double portion of our signature dry fruit shake. Perfect for sharing.", price: 220, calories: 800, category: "shakes", image: require("@/assets/images/coffee.png"), isVeg: true, rating: 4.5 },
+
+  // ── Mojitos ──
+  { id: "mj1", name: "Blue Lagoon", description: "Vibrant blue curacao, fresh lime and soda. As stunning to look at as it is refreshing to drink.", price: 70, calories: 110, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.5 },
+  { id: "mj2", name: "Watermelon Mojito", description: "Fresh watermelon pulp muddled with mint and lime. Summer in a glass.", price: 70, calories: 100, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.4 },
+  { id: "mj3", name: "Raspberry Mojito", description: "Tangy raspberry syrup with muddled mint and fresh lime. Bold, fruity and refreshing.", price: 70, calories: 110, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.3 },
+  { id: "mj4", name: "Mint Mojito", description: "The classic — fresh mint leaves, lime juice and soda. Pure, simple, perfect.", price: 70, calories: 90, category: "mojitos", image: require("@/assets/images/mojito.png"), isPopular: true, isVeg: true, rating: 4.5 },
+  { id: "mj5", name: "Kiwi Crush Mojito", description: "Fresh kiwi pulp muddled with mint and lime. A tropical twist on the classic.", price: 70, calories: 110, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.4 },
+  { id: "mj6", name: "Orange Mojito", description: "Citrusy orange juice meets mint and soda. Bright, zesty and uplifting.", price: 70, calories: 110, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.3 },
+  { id: "mj7", name: "Strawberry Mojito", description: "Muddled fresh strawberries with mint, lime and soda. Sweet, fruity and gorgeous.", price: 70, calories: 110, category: "mojitos", image: require("@/assets/images/mojito.png"), isPopular: true, isVeg: true, rating: 4.6 },
+  { id: "mj8", name: "Mixed Berry Mojito", description: "A medley of fresh berries muddled with mint. Every sip bursts with berry flavour.", price: 70, calories: 120, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.5 },
+  { id: "mj9", name: "Mango Mojito", description: "Sweet Alphonso mango pulp with mint and lime. The king of fruits meets the king of coolers.", price: 70, calories: 120, category: "mojitos", image: require("@/assets/images/mojito.png"), isFeatured: true, isVeg: true, rating: 4.7 },
+  { id: "mj10", name: "Green Apple Mojito", description: "Tart green apple syrup with mint and soda. Crisp, cool and tangy.", price: 70, calories: 110, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.4 },
+  { id: "mj11", name: "Bubble Gum Mojito", description: "Playful bubble gum flavour with mint and lime. A fun, nostalgic twist.", price: 70, calories: 120, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.3, badge: "Fun" },
+  { id: "mj12", name: "Cranberry Mojito", description: "Tangy cranberry juice with muddled mint and lime. Bold, tart and refreshingly different.", price: 70, calories: 100, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.2 },
+  { id: "mj13", name: "Black Current Mojito", description: "Rich black currant syrup with mint and soda. Deeply flavoured and wonderfully refreshing.", price: 70, calories: 110, category: "mojitos", image: require("@/assets/images/mojito.png"), isVeg: true, rating: 4.4 },
+  { id: "mj14", name: "Temptation Special Mojito", description: "Our signature creation — an exotic blend of seasonal fruits, mint and premium sparkling water. Truly unique.", price: 80, calories: 130, category: "mojitos", image: require("@/assets/images/mojito.png"), isFeatured: true, isBestSeller: true, isVeg: true, rating: 4.9, badge: "Signature" },
+
+  // ── Burgers ──
+  { id: "b1", name: "Chicken Zinger Burger", description: "Crispy golden chicken fillet, fresh lettuce and tangy sauce in a toasted bun. Our most-loved burger.", price: 130, calories: 420, category: "burgers", image: require("@/assets/images/burger.png"), isPopular: true, isFeatured: true, isBestSeller: true, rating: 4.8, badge: "Fan Favourite", addOns: [{ name: "Extra Cheese", price: 25 }, { name: "Jalapeños", price: 20 }, { name: "Extra Sauce", price: 15 }] },
+  { id: "b2", name: "Smokey Chicken Burger", description: "Grilled chicken with smoky BBQ sauce, onion rings and cheese. Bold, smoky flavour in every bite.", price: 120, calories: 390, category: "burgers", image: require("@/assets/images/burger.png"), rating: 4.5, addOns: [{ name: "Extra Cheese", price: 25 }, { name: "Add Bacon", price: 50 }] },
+  { id: "b3", name: "Paneer Burger", description: "Crispy grilled paneer patty with fresh veggies and tangy sauce. A vegetarian delight.", price: 120, calories: 350, category: "burgers", image: require("@/assets/images/burger.png"), isVeg: true, rating: 4.4, addOns: [{ name: "Extra Paneer", price: 30 }, { name: "Cheese Slice", price: 25 }] },
+  { id: "b4", name: "Veg Burger", description: "Garden-fresh veggie patty with lettuce, tomatoes and our house sauce. Simple and satisfying.", price: 100, calories: 300, category: "burgers", image: require("@/assets/images/burger.png"), isVeg: true, rating: 4.2, addOns: [{ name: "Add Cheese", price: 25 }] },
+
+  // ── Wraps ──
+  { id: "w1", name: "Crispy Chicken Wrap", description: "Crispy chicken strips with fresh lettuce, tomatoes and cheese sauce wrapped in a warm tortilla.", price: 130, calories: 360, category: "wraps", image: require("@/assets/images/wrap.png"), isPopular: true, rating: 4.5, addOns: [{ name: "Extra Cheese", price: 25 }, { name: "Double Filling", price: 50 }] },
+  { id: "w2", name: "Lebanese Chicken Wrap", description: "Lebanese-style spiced chicken with garlic toum, pickles and fresh herbs. A Mediterranean twist.", price: 120, calories: 340, category: "wraps", image: require("@/assets/images/wrap.png"), isFeatured: true, rating: 4.6, badge: "New" },
+
+  // ── Sandwiches ──
+  { id: "s1", name: "Veg Sandwich", description: "Fresh garden vegetables with butter and herbs between soft toasted bread. Classic and comforting.", price: 80, calories: 250, category: "sandwiches", image: require("@/assets/images/wrap.png"), isVeg: true, rating: 4.2 },
+  { id: "s2", name: "Chicken Sandwich", description: "Tender sliced chicken with fresh lettuce and mayo. Simple, satisfying and delicious.", price: 100, calories: 300, category: "sandwiches", image: require("@/assets/images/wrap.png"), rating: 4.3 },
+  { id: "s3", name: "Chicken Cheese Sandwich", description: "Grilled chicken with melted cheese, tomatoes and herbs. Warm, gooey and irresistible.", price: 120, calories: 350, category: "sandwiches", image: require("@/assets/images/wrap.png"), isPopular: true, rating: 4.5 },
+  { id: "s4", name: "Paneer Grilled Sandwich", description: "Grilled paneer with bell peppers, onions and cheese. A vegetarian grilled masterpiece.", price: 90, calories: 280, category: "sandwiches", image: require("@/assets/images/wrap.png"), isVeg: true, rating: 4.3 },
+  { id: "s5", name: "Paneer Cheese Sandwich", description: "Double cheese and grilled paneer with herbs. For when you want it extra cheesy.", price: 110, calories: 320, category: "sandwiches", image: require("@/assets/images/wrap.png"), isVeg: true, rating: 4.4 },
+
+  // ── Fries ──
+  { id: "f1", name: "Cheesy Chicken Fries", description: "Crispy fries smothered in melted cheese and topped with seasoned chicken chunks. Loaded perfection.", price: 130, calories: 420, category: "fries", image: require("@/assets/images/hero_banner.png"), isPopular: true, rating: 4.6 },
+  { id: "f2", name: "Cheesy Fries", description: "Golden fries generously drizzled with melted cheese sauce. Simple, indulgent, addictive.", price: 90, calories: 350, category: "fries", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.4 },
+  { id: "f3", name: "Peri Peri Fries", description: "Crispy fries tossed in our signature peri peri spice blend. Zesty, spicy and absolutely moreish.", price: 80, calories: 300, category: "fries", image: require("@/assets/images/hero_banner.png"), isVeg: true, isFeatured: true, rating: 4.5, badge: "Spicy" },
+  { id: "f4", name: "French Fries", description: "Classic golden fries, perfectly salted and fried to crispy perfection. A timeless snack.", price: 70, calories: 280, category: "fries", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.3 },
+
+  // ── Chicken ──
+  { id: "ch1", name: "Chicken Popcorn", description: "Bite-sized crispy chicken morsels, seasoned and fried golden. Impossibly addictive.", price: 120, calories: 340, category: "chicken", image: require("@/assets/images/popcorn.png"), isPopular: true, isBestSeller: true, rating: 4.7, badge: "Fan Favourite", addOns: [{ name: "Cheese Dip", price: 30 }, { name: "Large Portion", price: 50 }] },
+  { id: "ch2", name: "Peri Peri Chicken Popcorn", description: "Our famous popcorn chicken with a fiery peri peri kick. Spice lovers, this one's for you.", price: 130, calories: 350, category: "chicken", image: require("@/assets/images/popcorn.png"), isFeatured: true, rating: 4.6, addOns: [{ name: "Cheese Dip", price: 30 }, { name: "Extra Spicy", price: 10 }] },
+  { id: "ch3", name: "Chicken Strips", description: "Premium breast strips hand-battered in panko crumbs, fried until perfectly crisp.", price: 120, calories: 360, category: "chicken", image: require("@/assets/images/popcorn.png"), rating: 4.4, addOns: [{ name: "BBQ Sauce", price: 15 }, { name: "Cheese Sauce", price: 25 }] },
+  { id: "ch4", name: "Chicken Wings (5 pcs)", description: "Slow-marinated, fried chicken wings tossed in your choice of sauce. A crowd favourite.", price: 160, calories: 480, category: "chicken", image: require("@/assets/images/wings.png"), isPopular: true, rating: 4.6, addOns: [{ name: "BBQ Sauce", price: 0 }, { name: "Buffalo Sauce", price: 0 }, { name: "Honey Garlic", price: 0 }] },
+  { id: "ch5", name: "Crispy Chicken Nuggets", description: "Tender chicken nuggets with a satisfyingly crispy coating. Perfect with our dips.", price: 110, calories: 320, category: "chicken", image: require("@/assets/images/popcorn.png"), rating: 4.3, addOns: [{ name: "Cheese Dip", price: 30 }, { name: "Mayo Dip", price: 20 }] },
+  { id: "ch6", name: "Chicken Cheese Momos", description: "Delicate dumplings stuffed with minced chicken and melted cheese. Served with chilli garlic dip.", price: 110, calories: 280, category: "chicken", image: require("@/assets/images/momos.png"), rating: 4.5, addOns: [{ name: "Extra Cheese Dip", price: 30 }, { name: "Schezwan Sauce", price: 15 }] },
+  { id: "ch7", name: "Chicken Momos", description: "Classic steamed chicken momos with our signature chilli garlic dipping sauce.", price: 90, calories: 240, category: "chicken", image: require("@/assets/images/momos.png"), isPopular: true, rating: 4.4, addOns: [{ name: "Extra Dip", price: 20 }, { name: "Upgrade to Fried", price: 20 }] },
+
+  // ── Veg Starters ──
+  { id: "v1", name: "Cheese Balls", description: "Crispy golden exterior with a gooey molten cheese centre. Dipped in marinara — perfection.", price: 110, calories: 300, category: "veg-starters", image: require("@/assets/images/momos.png"), isVeg: true, isPopular: true, rating: 4.5 },
+  { id: "v2", name: "Crispy Veg Nuggets", description: "Garden vegetable nuggets with a crunchy coating. A vegetarian snack at its best.", price: 100, calories: 260, category: "veg-starters", image: require("@/assets/images/momos.png"), isVeg: true, rating: 4.2 },
+  { id: "v3", name: "Corn Cheese Momos", description: "Sweet corn and melted cheese stuffed in delicate dumplings. A veggie twist on a classic.", price: 110, calories: 260, category: "veg-starters", image: require("@/assets/images/momos.png"), isVeg: true, rating: 4.4 },
+  { id: "v4", name: "Paneer Momos", description: "Spiced paneer filling wrapped in thin dumpling sheets. Served with tangy tomato chutney.", price: 90, calories: 230, category: "veg-starters", image: require("@/assets/images/momos.png"), isVeg: true, rating: 4.3 },
+  { id: "v5", name: "Cheesy Fingers", description: "Crunchy cheese sticks fried golden and served with marinara dip. Pure cheesy joy.", price: 100, calories: 280, category: "veg-starters", image: require("@/assets/images/momos.png"), isVeg: true, isFeatured: true, rating: 4.5 },
+
+  // ── Waffles ──
+  { id: "wf1", name: "Dark & White Indulge", description: "Belgian waffle drizzled with dark and white chocolate. The best of both chocolate worlds.", price: 140, calories: 420, category: "waffles", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.5 },
+  { id: "wf2", name: "Chocolate Overload", description: "Belgian waffle drowned in rich chocolate sauce with chocolate shavings. For true chocoholics.", price: 140, calories: 450, category: "waffles", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.6 },
+  { id: "wf3", name: "Triple Chocolate", description: "Three kinds of chocolate — dark, milk and white — on a crispy Belgian waffle. Decadent.", price: 150, calories: 500, category: "waffles", image: require("@/assets/images/hero_banner.png"), isFeatured: true, isVeg: true, rating: 4.7 },
+  { id: "wf4", name: "Oreo Crunch", description: "Crushed Oreo pieces and cream on a warm waffle. Every bite is a cookie dream.", price: 150, calories: 480, category: "waffles", image: require("@/assets/images/hero_banner.png"), isPopular: true, isVeg: true, rating: 4.7, badge: "Trending" },
+  { id: "wf5", name: "Red Velvet", description: "Red velvet flavoured waffle with cream cheese drizzle and white chocolate shavings.", price: 150, calories: 460, category: "waffles", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.5 },
+  { id: "wf6", name: "Almond Brownie", description: "Fudgy brownie waffle topped with toasted almonds and chocolate sauce. Crunchy meets gooey.", price: 160, calories: 510, category: "waffles", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.6 },
+  { id: "wf7", name: "Lotus Biscoff", description: "Warm waffle with Lotus Biscoff spread, crushed biscuits and a caramel drizzle. Irresistible.", price: 160, calories: 520, category: "waffles", image: require("@/assets/images/hero_banner.png"), isFeatured: true, isBestSeller: true, isVeg: true, rating: 4.8, badge: "Best Seller" },
+  { id: "wf8", name: "KitKat", description: "Kit Kat chunks melted over a warm waffle with chocolate sauce. A candy bar lover's dream.", price: 160, calories: 500, category: "waffles", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.6 },
+  { id: "wf9", name: "Nutella", description: "Generous slather of Nutella on a crispy Belgian waffle. Simple, classic, perfection.", price: 160, calories: 490, category: "waffles", image: require("@/assets/images/hero_banner.png"), isPopular: true, isVeg: true, rating: 4.7 },
+  { id: "wf10", name: "Strawberry Cream Cheese", description: "Fresh strawberry slices with cream cheese frosting on a warm waffle. Elegant and delicious.", price: 160, calories: 440, category: "waffles", image: require("@/assets/images/hero_banner.png"), isVeg: true, rating: 4.5 },
 ];
 
 export const offers = [
@@ -512,6 +225,91 @@ export const reviews = [
     text: "Loved it! Pizzas, chicken popcorn, momo, wrap, burger, mojitos — all fantastic. Beautiful ambience and value for money food. The menu has great variety.",
     time: "2 months ago",
     isVerified: true,
+  },
+];
+
+export interface AboutSection {
+  title: string;
+  icon: string;
+  items: string[];
+}
+
+export const aboutSections: AboutSection[] = [
+  {
+    title: "Accessibility",
+    icon: "accessibility",
+    items: [
+      "Wheelchair-accessible car park",
+      "Assistive hearing loop",
+      "Wheelchair-accessible entrance",
+      "Wheelchair-accessible seating",
+      "Wheelchair-accessible toilet",
+    ],
+  },
+  {
+    title: "Service Options",
+    icon: "package",
+    items: ["Takeaway", "Dine-in"],
+  },
+  {
+    title: "Highlights",
+    icon: "star",
+    items: ["Great coffee", "Great tea selection", "Live music"],
+  },
+  {
+    title: "Popular For",
+    icon: "users",
+    items: ["Solo dining", "Good for working on laptop"],
+  },
+  {
+    title: "Offerings",
+    icon: "coffee",
+    items: ["Coffee", "Quick bite", "Small plates", "Cuisine", "Dishes"],
+  },
+  {
+    title: "Dining Options",
+    icon: "watch",
+    items: ["Breakfast", "Brunch", "Lunch", "Dinner", "Dessert", "Seating", "Table service"],
+  },
+  {
+    title: "Amenities",
+    icon: "home",
+    items: ["Restroom"],
+  },
+  {
+    title: "Atmosphere",
+    icon: "wind",
+    items: ["Casual", "Quiet", "Trendy"],
+  },
+  {
+    title: "Crowd",
+    icon: "smile",
+    items: ["Family friendly", "Groups", "University students"],
+  },
+  {
+    title: "Planning",
+    icon: "calendar",
+    items: ["Accepts reservations"],
+  },
+  {
+    title: "Payments",
+    icon: "credit-card",
+    items: ["Credit cards", "Debit cards", "Google Pay", "NFC mobile payments"],
+  },
+  {
+    title: "Children",
+    icon: "heart",
+    items: ["Good for kids", "High chairs", "Kids' menu"],
+  },
+  {
+    title: "Parking",
+    icon: "map-pin",
+    items: ["Free parking lot", "Free street parking", "Plenty of parking"],
+  },
+  {
+    title: "Pets",
+    icon: "github",
+    items: ["Dogs allowed outside"],
   },
 ];
 

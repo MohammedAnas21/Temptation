@@ -15,13 +15,16 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import fonts from "@/constants/fonts";
+
+import { AboutCard } from "@/components/AboutCard";
 import { OfferCard } from "@/components/OfferCard";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MenuItemCard } from "@/components/MenuItemCard";
 import { LogoBrand } from "@/components/LogoBrand";
 import { useCart } from "@/contexts/CartContext";
-import { menuItems, offers, reviews, events } from "@/constants/menu";
+import { menuItems, offers, reviews, events, aboutSections } from "@/constants/menu";
 import { useColors } from "@/hooks/useColors";
 import { useLayout } from "@/hooks/useLayout";
 
@@ -48,11 +51,11 @@ export default function HomeScreen() {
   const cpl = layout.contentPadL;
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View style={[styles.root, { backgroundColor: colors.background, maxWidth: layout.contentW, width: "100%", alignSelf: "center" }]}>
       <Animated.View
         style={[
           styles.header,
-          { paddingTop: topPad + 10, backgroundColor: headerBg, paddingHorizontal: hp },
+          { paddingTop: topPad + 10, backgroundColor: headerBg, paddingHorizontal: hp, maxWidth: layout.contentW, width: "100%" },
         ]}
       >
         <View style={styles.logoRow}>
@@ -79,7 +82,7 @@ export default function HomeScreen() {
 
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: Platform.OS === "web" ? 140 : 120 }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: false }
@@ -87,25 +90,15 @@ export default function HomeScreen() {
         scrollEventThrottle={16}
       >
         {/* ── Hero ── */}
-        <View style={[styles.hero, { height: layout.heroH }]}>
+        <View style={[styles.hero, { minHeight: layout.heroH }]}>
           <Image
             source={require("@/assets/images/ambience.png")}
             style={styles.heroImg}
             resizeMode="cover"
           />
           <View style={styles.heroOverlay} />
-          <View style={[styles.heroContent, { left: hp, right: hp }]}>
-            <View
-              style={[
-                styles.ratingPill,
-                { backgroundColor: "rgba(200,160,40,0.18)", borderColor: "rgba(200,160,40,0.35)" },
-              ]}
-            >
-              <Feather name="star" size={12} color={colors.gold} />
-              <Text style={[styles.ratingText, { color: colors.gold, fontSize: layout.fs(12) }]}>
-                4.1 · 90+ Google Reviews
-              </Text>
-            </View>
+          <View style={[styles.heroContent, { paddingHorizontal: hp, paddingTop: topPad + 70, paddingBottom: 28 }]}>
+
             <Text style={[styles.heroTitle, { fontSize: layout.fs(34) }]}>
               Best Burgers &{"\n"}Mojitos In{"\n"}Kalaburagi
             </Text>
@@ -379,7 +372,7 @@ export default function HomeScreen() {
         </Pressable>
 
         {/* ── Contact Row ── */}
-        <View style={[styles.contactRow, { paddingHorizontal: hp, marginBottom: 28 }]}>
+        <View style={[styles.contactRow, { paddingHorizontal: hp, marginBottom: 16 }]}>
           <Pressable
             style={[styles.contactBtn, { backgroundColor: "#25D36618", borderColor: "#25D36644" }]}
           >
@@ -401,6 +394,11 @@ export default function HomeScreen() {
             </Text>
           </Pressable>
         </View>
+
+        {/* ── About ── */}
+        <View style={{ paddingHorizontal: hp, marginBottom: 28 }}>
+          <AboutCard sections={aboutSections} />
+        </View>
       </Animated.ScrollView>
     </View>
   );
@@ -421,7 +419,7 @@ const styles = StyleSheet.create({
   },
   logoRow: { gap: 2 },
   locRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  locText: {},
+  locText: { fontFamily: fonts.body[400] },
   cartBtn: {
     width: 42,
     height: 42,
@@ -440,11 +438,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  badgeNum: { fontSize: 10, fontWeight: "800", color: "#000" },
-  hero: { position: "relative" },
-  heroImg: { width: "100%", height: "100%" },
-  heroOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(13,51,33,0.62)" },
-  heroContent: { position: "absolute", bottom: 28 },
+  badgeNum: { fontSize: 10, fontFamily: fonts.mono[700], color: "#000" },
+  hero: { 
+    position: "relative",
+    justifyContent: "flex-end",
+  },
+  heroImg: { ...StyleSheet.absoluteFillObject },
+  heroOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(5,42,22,0.62)" },
+  heroContent: {},
   ratingPill: {
     flexDirection: "row",
     alignItems: "center",
@@ -456,15 +457,15 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginBottom: 14,
   },
-  ratingText: { fontWeight: "600" },
+  ratingText: { fontFamily: fonts.body[600] },
   heroTitle: {
-    fontWeight: "900",
-    color: "#F5F0E8",
+    fontFamily: fonts.display[900],
+    color: "#FAF6EC",
     lineHeight: undefined,
     letterSpacing: -0.5,
     marginBottom: 8,
   },
-  heroSub: { marginBottom: 20 },
+  heroSub: { fontFamily: fonts.body[400], marginBottom: 20 },
   heroButtons: { flexDirection: "row", gap: 10, flexWrap: "wrap" },
   ctaBtn: {
     flexDirection: "row",
@@ -474,7 +475,7 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     borderRadius: 30,
   },
-  ctaBtnText: { fontWeight: "800", color: "#000" },
+  ctaBtnText: { fontFamily: fonts.body[800], color: "#052A16" },
   ctaOutline: {
     flexDirection: "row",
     alignItems: "center",
@@ -484,15 +485,15 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1.5,
   },
-  ctaOutlineText: { fontWeight: "700" },
+  ctaOutlineText: { fontFamily: fonts.body[700] },
   statsRow: { flexDirection: "row", gap: 10, paddingVertical: 16 },
   statCard: { flex: 1, borderRadius: 12, borderWidth: 1, padding: 12, alignItems: "center", gap: 4 },
-  statVal: { fontWeight: "700" },
-  statSub: {},
+  statVal: { fontFamily: fonts.body[700] },
+  statSub: { fontFamily: fonts.body[400] },
   section: { marginBottom: 28 },
   eventCard: { borderRadius: 16, marginRight: 12, overflow: "hidden" },
   eventImage: { width: "100%", height: "100%", position: "absolute" },
-  eventOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(13,51,33,0.68)" },
+  eventOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(5,42,22,0.68)" },
   eventContent: { flex: 1, padding: 14, justifyContent: "flex-end" },
   eventIconWrap: {
     width: 32,
@@ -503,18 +504,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 8,
   },
-  eventTitle: { fontWeight: "800", marginBottom: 2 },
-  eventSub: { marginBottom: 8 },
+  eventTitle: { fontFamily: fonts.display[800], marginBottom: 2 },
+  eventSub: { fontFamily: fonts.body[400], marginBottom: 8 },
   eventPricePill: { borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, alignSelf: "flex-start" },
-  eventPrice: { fontWeight: "700" },
+  eventPrice: { fontFamily: fonts.mono[700] },
   loyaltySection: { marginBottom: 28 },
   loyaltyCard: { borderRadius: 18, borderWidth: 1, padding: 22, overflow: "hidden" },
   loyaltyLeft: { gap: 8, zIndex: 1 },
   loyaltyIconWrap: { width: 40, height: 40, borderRadius: 12, justifyContent: "center", alignItems: "center" },
-  loyaltyTitle: { fontWeight: "900" },
-  loyaltySub: { lineHeight: 18, maxWidth: "80%" },
+  loyaltyTitle: { fontFamily: fonts.display[900] },
+  loyaltySub: { fontFamily: fonts.body[400], lineHeight: 18, maxWidth: "80%" },
   loyaltyBtn: { alignSelf: "flex-start", paddingHorizontal: 18, paddingVertical: 10, borderRadius: 20, marginTop: 4 },
-  loyaltyBtnText: { fontWeight: "800", color: "#000" },
+  loyaltyBtnText: { fontFamily: fonts.body[800], color: "#052A16" },
   mapSection: {
     flexDirection: "row",
     alignItems: "center",
@@ -526,8 +527,8 @@ const styles = StyleSheet.create({
   },
   mapIconWrap: { width: 44, height: 44, borderRadius: 12, justifyContent: "center", alignItems: "center" },
   mapInfo: { flex: 1 },
-  mapTitle: { fontWeight: "700", marginBottom: 4 },
-  mapAddr: { lineHeight: 18, marginBottom: 8 },
+  mapTitle: { fontFamily: fonts.body[700], marginBottom: 4 },
+  mapAddr: { fontFamily: fonts.body[400], lineHeight: 18, marginBottom: 8 },
   mapMeta: {},
   openPill: {
     flexDirection: "row",
@@ -539,9 +540,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   openDot: { width: 6, height: 6, borderRadius: 3 },
-  openText: { fontWeight: "600" },
+  openText: { fontFamily: fonts.body[600] },
   dirBtn: { width: 40, height: 40, borderRadius: 12, justifyContent: "center", alignItems: "center", borderWidth: 1 },
-  contactRow: { flexDirection: "row", gap: 10 },
+  contactRow: { flexDirection: "row", gap: 10, flexWrap: "wrap" },
   contactBtn: {
     flex: 1,
     flexDirection: "row",
@@ -551,7 +552,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     paddingVertical: 12,
+    minWidth: 90,
   },
   contactIcon: { fontSize: 16 },
-  contactText: { fontWeight: "700" },
+  contactText: { fontFamily: fonts.body[700] },
 });

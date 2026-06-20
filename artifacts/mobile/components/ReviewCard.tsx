@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
 
 interface Review {
@@ -55,10 +56,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  avatarText: { fontSize: 16, fontWeight: "700" },
+  avatarText: { fontSize: 16, fontFamily: fonts.display[800] },
   info: { flex: 1 },
-  name: { fontSize: 13, fontWeight: "700", marginBottom: 2 },
+  name: { fontSize: 13, fontFamily: fonts.body[700], marginBottom: 2 },
   stars: { flexDirection: "row", gap: 2 },
-  time: { fontSize: 11 },
-  text: { fontSize: 12, lineHeight: 18 },
+  time: { fontSize: 11, fontFamily: fonts.body[400] },
+  text: { fontSize: 12, fontFamily: fonts.body[400], lineHeight: 18 },
 });

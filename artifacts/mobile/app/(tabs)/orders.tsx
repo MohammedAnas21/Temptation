@@ -19,6 +19,7 @@ import { LogoBrand } from "@/components/LogoBrand";
 import { useCart } from "@/contexts/CartContext";
 import { useUser } from "@/contexts/UserContext";
 import { Order } from "@/contexts/UserContext";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
 import { useLayout } from "@/hooks/useLayout";
 
@@ -45,6 +46,7 @@ export default function OrdersScreen() {
   const [couponInput, setCouponInput] = useState("");
   const [couponError, setCouponError] = useState("");
   const [orderType, setOrderType] = useState<"delivery" | "dine-in">("delivery");
+  const [selectedDineInTable, setSelectedDineInTable] = useState<string | null>(null);
   const {
     items, updateQuantity, removeItem, clearCart,
     total, itemCount, appliedCoupon, discount,
@@ -70,6 +72,10 @@ export default function OrdersScreen() {
 
   const handlePlaceOrder = () => {
     if (items.length === 0) return;
+    if (orderType === "dine-in" && !selectedDineInTable) {
+      Alert.alert("Select Table", "Please select a table for your dine-in order.");
+      return;
+    }
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     const newOrder: Order = {
       id: Date.now().toString(),
@@ -82,10 +88,12 @@ export default function OrdersScreen() {
       status: "placed",
       pointsEarned: Math.floor(finalTotal / 10),
       type: orderType,
+      tableId: orderType === "dine-in" && selectedDineInTable ? selectedDineInTable : undefined,
     };
     addOrder(newOrder);
     clearCart();
     setCouponInput("");
+    setSelectedDineInTable(null);
     setActiveTab("orders");
     Alert.alert(
       "Order Placed! 🎉",
@@ -94,7 +102,7 @@ export default function OrdersScreen() {
   };
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View style={[styles.root, { backgroundColor: colors.background, maxWidth: layout.contentW, width: "100%", alignSelf: "center" }]}>
       <View style={[styles.header, { paddingTop: topPad + 8, paddingHorizontal: hp }]}>
         <LogoBrand variant="mini" />
         <Text style={[styles.title, { color: colors.foreground, fontSize: layout.fs(26) }]}>
@@ -129,22 +137,24 @@ export default function OrdersScreen() {
         </View>
       </View>
 
-      {activeTab === "cart" ? (
-        items.length === 0 ? (
-          <View style={styles.empty}>
-            <Feather name="shopping-bag" size={48} color={colors.mutedForeground} />
-            <Text style={[styles.emptyTitle, { color: colors.foreground, fontSize: layout.fs(20) }]}>
-              Cart is empty
-            </Text>
-            <Text style={[styles.emptySub, { color: colors.mutedForeground, fontSize: layout.fs(13) }]}>
-              Add items from our menu to get started
-            </Text>
-          </View>
-        ) : (
-          <ScrollView
-            contentContainerStyle={{ paddingBottom: 140 }}
-            showsVerticalScrollIndicator={false}
-          >
+      <View style={{ flex: 1 }}>
+        {activeTab === "cart" ? (
+          items.length === 0 ? (
+            <View style={styles.empty}>
+              <Feather name="shopping-bag" size={48} color={colors.mutedForeground} />
+              <Text style={[styles.emptyTitle, { color: colors.foreground, fontSize: layout.fs(20) }]}>
+                Cart is empty
+              </Text>
+              <Text style={[styles.emptySub, { color: colors.mutedForeground, fontSize: layout.fs(13) }]}>
+                Add items from our menu to get started
+              </Text>
+            </View>
+          ) : (
+            <ScrollView
+              style={{ flex: 1 }}
+              contentContainerStyle={{ paddingBottom: 24 }}
+              showsVerticalScrollIndicator={false}
+            >
             <View style={{ paddingHorizontal: hp, gap: 10, marginTop: 16 }}>
               {items.map((item) => (
                 <View
@@ -227,6 +237,43 @@ export default function OrdersScreen() {
                 ))}
               </View>
             </View>
+
+            {orderType === "dine-in" && (
+              <View style={{ paddingHorizontal: hp, marginTop: 20 }}>
+                <Text style={[styles.sectionTitle, { color: colors.foreground, fontSize: layout.fs(16), marginBottom: 8 }]}>
+                  Select Dine-In Table
+                </Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingVertical: 4 }}>
+                  {["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9"].map((tableId) => {
+                    const isSelectedTable = selectedDineInTable === tableId;
+                    return (
+                      <Pressable
+                        key={tableId}
+                        onPress={() => {
+                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          setSelectedDineInTable(tableId);
+                        }}
+                        style={{
+                          backgroundColor: isSelectedTable ? colors.gold : colors.card,
+                          borderColor: isSelectedTable ? colors.gold : colors.border,
+                          borderWidth: 1.5,
+                          borderRadius: 10,
+                          paddingHorizontal: 16,
+                          paddingVertical: 10,
+                          minWidth: 64,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text style={{ color: isSelectedTable ? "#000" : colors.foreground, fontWeight: "700", fontSize: layout.fs(13) }}>
+                          {tableId}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            )}
 
             <View style={{ paddingHorizontal: hp, marginTop: 20 }}>
               <Text style={[styles.sectionTitle, { color: colors.foreground, fontSize: layout.fs(16) }]}>
@@ -390,9 +437,10 @@ export default function OrdersScreen() {
           )}
         />
       )}
+      </View>
 
       {activeTab === "cart" && items.length > 0 && (
-        <View style={[styles.placeOrderBar, { paddingBottom: bottomPad + 12, paddingHorizontal: hp }]}>
+        <View style={[styles.placeOrderBar, { paddingBottom: bottomPad + 12, paddingHorizontal: hp, maxWidth: layout.contentW, width: "100%", left: "auto", right: "auto", alignSelf: "center" }]}>
           <Pressable
             onPress={handlePlaceOrder}
             style={[styles.placeOrderBtn, { backgroundColor: colors.gold }]}
@@ -411,7 +459,7 @@ export default function OrdersScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   header: { paddingBottom: 8 },
-  title: { fontWeight: "900", letterSpacing: -0.5, marginBottom: 12 },
+  title: { fontFamily: fonts.display[900], letterSpacing: -0.5, marginBottom: 12 },
   tabs: { flexDirection: "row", borderRadius: 12, borderWidth: 1, padding: 3, gap: 3 },
   tab: {
     flex: 1,
@@ -422,10 +470,10 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 10,
   },
-  tabText: {},
+  tabText: { fontFamily: fonts.body[500] },
   empty: { flex: 1, justifyContent: "center", alignItems: "center", gap: 10 },
-  emptyTitle: { fontWeight: "700" },
-  emptySub: { textAlign: "center", paddingHorizontal: 40 },
+  emptyTitle: { fontFamily: fonts.display[700] },
+  emptySub: { fontFamily: fonts.body[400], textAlign: "center", paddingHorizontal: 40 },
   cartItem: {
     flexDirection: "row",
     alignItems: "center",
@@ -435,8 +483,8 @@ const styles = StyleSheet.create({
   },
   cartImg: { width: 70, height: 70 },
   cartInfo: { flex: 1, padding: 10 },
-  cartName: { fontWeight: "600", marginBottom: 4 },
-  cartPrice: { fontWeight: "700" },
+  cartName: { fontFamily: fonts.body[600], marginBottom: 4 },
+  cartPrice: { fontFamily: fonts.mono[700] },
   qtyControls: { flexDirection: "row", alignItems: "center", gap: 8, paddingRight: 8 },
   qtyBtn: {
     width: 28,
@@ -446,8 +494,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  qtyNum: { fontSize: 14, fontWeight: "700", minWidth: 18, textAlign: "center" },
-  sectionTitle: { fontWeight: "700", marginBottom: 10 },
+  qtyNum: { fontSize: 14, fontFamily: fonts.mono[700], minWidth: 18, textAlign: "center" },
+  sectionTitle: { fontFamily: fonts.display[700], marginBottom: 10 },
   typeRow: { flexDirection: "row", gap: 10 },
   typeBtn: {
     flex: 1,
@@ -459,7 +507,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 12,
   },
-  typeBtnText: { fontWeight: "600" },
+  typeBtnText: { fontFamily: fonts.body[600] },
   couponRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -467,9 +515,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     overflow: "hidden",
   },
-  couponInput: { flex: 1, paddingHorizontal: 14, paddingVertical: 12 },
+  couponInput: { flex: 1, paddingHorizontal: 14, paddingVertical: 12, fontFamily: fonts.body[400] },
   applyBtn: { paddingHorizontal: 18, paddingVertical: 12 },
-  applyText: { fontWeight: "700", color: "#000" },
+  applyText: { fontFamily: fonts.body[700], color: "#052A16" },
   appliedCoupon: {
     flexDirection: "row",
     alignItems: "center",
@@ -479,24 +527,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
   },
-  appliedCode: { fontWeight: "600" },
-  couponErr: { color: "#E53935", marginTop: 6 },
+  appliedCode: { fontFamily: fonts.mono[400] },
+  couponErr: { fontFamily: fonts.body[400], color: "#E53935", marginTop: 6 },
   summaryCard: { marginTop: 20, marginBottom: 8, borderRadius: 14, borderWidth: 1, padding: 16 },
   summaryRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 8 },
-  summaryLabel: {},
-  summaryVal: { fontWeight: "600" },
+  summaryLabel: { fontFamily: fonts.body[400] },
+  summaryVal: { fontFamily: fonts.mono[400] },
   divider: { height: 1, borderRadius: 1 },
-  totalLabel: { fontWeight: "800" },
-  totalVal: { fontWeight: "900" },
-  freeDeliveryNote: { marginTop: 8 },
+  totalLabel: { fontFamily: fonts.display[800] },
+  totalVal: { fontFamily: fonts.mono[700] },
+  freeDeliveryNote: { fontFamily: fonts.body[400], marginTop: 8 },
   orderCard: { borderRadius: 14, borderWidth: 1, padding: 14 },
   orderHeader: {
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "space-between",
   },
-  orderId: { fontWeight: "700", marginBottom: 3 },
-  orderDate: {},
+  orderId: { fontFamily: fonts.body[700], marginBottom: 3 },
+  orderDate: { fontFamily: fonts.body[400] },
   statusBadge: {
     flexDirection: "row",
     alignItems: "center",
@@ -506,10 +554,10 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   statusDot: { width: 7, height: 7, borderRadius: 4 },
-  statusText: { fontWeight: "600" },
-  orderItem: { lineHeight: 20 },
+  statusText: { fontFamily: fonts.body[600] },
+  orderItem: { fontFamily: fonts.body[400], lineHeight: 20 },
   orderFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  orderTotal: { fontWeight: "600" },
+  orderTotal: { fontFamily: fonts.mono[700] },
   pointsBadge: {
     flexDirection: "row",
     alignItems: "center",
@@ -518,8 +566,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
-  pointsText: { fontWeight: "700" },
-  placeOrderBar: { position: "absolute", bottom: 0, left: 0, right: 0, paddingTop: 12 },
+  pointsText: { fontFamily: fonts.body[700] },
+  placeOrderBar: { paddingTop: 12 },
   placeOrderBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -528,5 +576,5 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingVertical: 16,
   },
-  placeOrderText: { fontWeight: "800", color: "#000" },
+  placeOrderText: { fontFamily: fonts.body[800], color: "#052A16" },
 });

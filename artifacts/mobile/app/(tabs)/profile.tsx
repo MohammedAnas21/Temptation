@@ -1,5 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
@@ -17,14 +18,16 @@ import { LogoBrand } from "@/components/LogoBrand";
 import { useUser } from "@/contexts/UserContext";
 import { menuItems } from "@/constants/menu";
 import { MenuItemCard } from "@/components/MenuItemCard";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
 import { useLayout } from "@/hooks/useLayout";
 
 export default function ProfileScreen() {
   const colors = useColors();
   const layout = useLayout();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { profile, orders, reservations, favorites } = useUser();
+  const { profile, orders, reservations, favorites, logout } = useUser();
   const [activeSection, setActiveSection] = useState<"main" | "favorites" | "history">("main");
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
@@ -49,6 +52,20 @@ export default function ProfileScreen() {
     } catch {}
   };
 
+  const handleLogout = () => {
+    Alert.alert("Log Out", "Are you sure you want to sign out?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Log Out",
+        style: "destructive",
+        onPress: async () => {
+          await logout();
+          router.replace("/login");
+        },
+      },
+    ]);
+  };
+
   const menuLinks = [
     { icon: "clock", label: "Order History", count: orders.length, onPress: () => setActiveSection("history") },
     { icon: "heart", label: "Favourites", count: favorites.length, onPress: () => setActiveSection("favorites") },
@@ -57,10 +74,11 @@ export default function ProfileScreen() {
     { icon: "map-pin", label: "Saved Addresses", onPress: () => {} },
     { icon: "bell", label: "Notifications", onPress: () => {} },
     { icon: "settings", label: "Settings", onPress: () => {} },
+    { icon: "log-out", label: "Log Out", onPress: handleLogout },
   ];
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View style={[styles.root, { backgroundColor: colors.background, maxWidth: layout.contentW, width: "100%", alignSelf: "center" }]}>
       <View style={[styles.header, { paddingTop: topPad + 8, paddingHorizontal: hp }]}>
         <LogoBrand variant="mini" />
         <View style={styles.headerRow}>
@@ -120,6 +138,7 @@ export default function ProfileScreen() {
             </View>
             <Text style={[styles.name, { color: colors.foreground }]}>{profile.name}</Text>
             <Text style={[styles.phone, { color: colors.mutedForeground }]}>{profile.phone}</Text>
+            <Text style={[styles.email, { color: colors.mutedForeground }]}>{profile.email}</Text>
             <View style={[styles.levelPill, { backgroundColor: levelColors[loyaltyLevel] + "22", borderColor: levelColors[loyaltyLevel] + "44" }]}>
               <Feather name="award" size={14} color={levelColors[loyaltyLevel]} />
               <Text style={[styles.levelText, { color: levelColors[loyaltyLevel] }]}>{loyaltyLevel} Member</Text>
@@ -226,54 +245,55 @@ const styles = StyleSheet.create({
   root: { flex: 1 },
   header: { paddingBottom: 8 },
   headerRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  title: { fontSize: 28, fontWeight: "900", letterSpacing: -0.5 },
+  title: { fontSize: 28, fontFamily: fonts.display[900], letterSpacing: -0.5 },
   profileCard: { alignItems: "center", paddingVertical: 24, paddingHorizontal: 20 },
   avatar: { width: 80, height: 80, borderRadius: 40, justifyContent: "center", alignItems: "center", borderWidth: 2, marginBottom: 12 },
-  avatarText: { fontSize: 36, fontWeight: "800" },
-  name: { fontSize: 22, fontWeight: "800", marginBottom: 4 },
-  phone: { fontSize: 14, marginBottom: 10 },
+  avatarText: { fontSize: 36, fontFamily: fonts.display[800] },
+  name: { fontSize: 22, fontFamily: fonts.display[800], marginBottom: 4 },
+  phone: { fontSize: 14, fontFamily: fonts.body[400], marginBottom: 2 },
+  email: { fontSize: 12, fontFamily: fonts.body[400], marginBottom: 10, opacity: 0.85 },
   levelPill: { flexDirection: "row", alignItems: "center", gap: 6, borderWidth: 1, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5 },
-  levelText: { fontSize: 13, fontWeight: "700" },
+  levelText: { fontSize: 13, fontFamily: fonts.body[700] },
   loyaltyCard: { marginBottom: 16, borderRadius: 16, borderWidth: 1, padding: 18 },
   loyaltyTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 },
-  loyaltyPoints: { fontSize: 36, fontWeight: "900", letterSpacing: -1 },
-  loyaltyLabel: { fontSize: 12, marginTop: 2 },
+  loyaltyPoints: { fontSize: 36, fontFamily: fonts.display[900], letterSpacing: -1 },
+  loyaltyLabel: { fontSize: 12, fontFamily: fonts.body[400], marginTop: 2 },
   loyaltyRight: {},
   progressBg: { height: 6, borderRadius: 3, marginBottom: 6, overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 3 },
-  progressLabel: { fontSize: 11, marginBottom: 14 },
+  progressLabel: { fontSize: 11, fontFamily: fonts.body[400], marginBottom: 14 },
   redeemRow: { flexDirection: "row", gap: 8 },
   redeemOption: { flex: 1, borderWidth: 1, borderRadius: 10, padding: 10, alignItems: "center" },
-  redeemVal: { fontSize: 13, fontWeight: "800" },
-  redeemDesc: { fontSize: 10, marginTop: 2 },
+  redeemVal: { fontSize: 13, fontFamily: fonts.mono[700] },
+  redeemDesc: { fontSize: 10, fontFamily: fonts.body[400], marginTop: 2 },
   referCard: { marginBottom: 16, borderRadius: 16, borderWidth: 1, padding: 18, flexDirection: "row", alignItems: "center" },
   referLeft: { flex: 1, gap: 6 },
-  referTitle: { fontSize: 16, fontWeight: "800" },
-  referSub: { fontSize: 12, lineHeight: 17 },
+  referTitle: { fontSize: 16, fontFamily: fonts.display[700] },
+  referSub: { fontSize: 12, fontFamily: fonts.body[400], lineHeight: 17 },
   codePill: { flexDirection: "row", alignItems: "center", gap: 6, borderWidth: 1, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6, alignSelf: "flex-start" },
-  codeText: { fontSize: 13, fontWeight: "700", letterSpacing: 1 },
+  codeText: { fontSize: 13, fontFamily: fonts.mono[700], letterSpacing: 1 },
   shareBtn: { width: 46, height: 46, borderRadius: 23, justifyContent: "center", alignItems: "center", marginLeft: 12 },
   menuList: { marginBottom: 16, borderRadius: 16, borderWidth: 1, overflow: "hidden" },
   menuItem: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 12 },
   menuIcon: { width: 36, height: 36, borderRadius: 10, justifyContent: "center", alignItems: "center" },
   menuInfo: { flex: 1 },
-  menuLabel: { fontSize: 14, fontWeight: "600" },
-  menuSub: { fontSize: 11, marginTop: 2 },
+  menuLabel: { fontSize: 14, fontFamily: fonts.body[600] },
+  menuSub: { fontSize: 11, fontFamily: fonts.body[400], marginTop: 2 },
   menuRight: { flexDirection: "row", alignItems: "center", gap: 8 },
   countBadge: { borderRadius: 20, paddingHorizontal: 8, paddingVertical: 2 },
-  countText: { fontSize: 12, fontWeight: "700" },
+  countText: { fontSize: 12, fontFamily: fonts.mono[700] },
   divider: { height: 1, marginLeft: 64 },
   cafeInfo: { marginBottom: 20, borderRadius: 14, borderWidth: 1, padding: 16, flexDirection: "row", alignItems: "center", gap: 12 },
   cafeInfoText: { flex: 1 },
-  cafeInfoTitle: { fontSize: 14, fontWeight: "700", marginBottom: 3 },
-  cafeInfoSub: { fontSize: 12 },
+  cafeInfoTitle: { fontSize: 14, fontFamily: fonts.body[700], marginBottom: 3 },
+  cafeInfoSub: { fontSize: 12, fontFamily: fonts.body[400] },
   empty: { flex: 1, justifyContent: "center", alignItems: "center", gap: 10 },
-  emptyTitle: { fontSize: 20, fontWeight: "700" },
-  emptySub: { fontSize: 13, textAlign: "center", paddingHorizontal: 40 },
+  emptyTitle: { fontSize: 20, fontFamily: fonts.display[700] },
+  emptySub: { fontSize: 13, fontFamily: fonts.body[400], textAlign: "center", paddingHorizontal: 40 },
   orderCard: { borderRadius: 12, borderWidth: 1, padding: 14, gap: 6 },
-  orderDate: { fontSize: 13, fontWeight: "700" },
-  orderItems: { fontSize: 12, lineHeight: 18 },
+  orderDate: { fontSize: 13, fontFamily: fonts.body[700] },
+  orderItems: { fontSize: 12, fontFamily: fonts.body[400], lineHeight: 18 },
   orderFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 4 },
-  orderTotal: { fontSize: 16, fontWeight: "800" },
-  orderPts: { fontSize: 11 },
+  orderTotal: { fontSize: 16, fontFamily: fonts.mono[700] },
+  orderPts: { fontSize: 11, fontFamily: fonts.body[400] },
 });

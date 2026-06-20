@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "Temptations Cafe",
-    "slug": "mobile",
+    "slug": "temptations-cafe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
+    "scheme": "temptations-cafe",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
@@ -14,9 +14,11 @@
       "backgroundColor": "#0D3321"
     },
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.temptations.cafe"
     },
     "android": {
+      "package": "com.temptations.cafe",
       "backgroundColor": "#0D3321"
     },
     "web": {
@@ -35,6 +37,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b07190a8-bf1a-430a-9ebd-8e95cc6dae52"
+      }
+    },
+    "owner": "mohammedanas21102001"
   }
 }

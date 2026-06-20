@@ -4,7 +4,6 @@ import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
   Animated,
-  Dimensions,
   FlatList,
   Image,
   Platform,
@@ -12,12 +11,12 @@ import {
   StyleSheet,
   Text,
   View,
+  useWindowDimensions,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LogoBrand } from "@/components/LogoBrand";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
-
-const { width, height } = Dimensions.get("window");
 
 const SLIDES = [
   {
@@ -54,6 +53,7 @@ export default function OnboardingScreen() {
   const colors = useColors();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
 
@@ -93,7 +93,7 @@ export default function OnboardingScreen() {
         scrollEnabled={false}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item: slide }) => (
-          <View style={[styles.slide, { width }]}>
+          <View style={[styles.slide, { width }]}>            
             <Image source={slide.image} style={styles.slideImage} resizeMode="cover" />
             <View style={[styles.imageOverlay, { backgroundColor: colors.background + "CC" }]} />
             <View style={[styles.slideContent, { paddingBottom: bottomPad + 130 }]}>
@@ -153,7 +153,7 @@ export default function OnboardingScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  slide: { flex: 1, height },
+  slide: { flex: 1 },
   slideImage: { ...StyleSheet.absoluteFillObject as any, width: "100%", height: "100%" },
   imageOverlay: { ...StyleSheet.absoluteFillObject as any },
   slideContent: {
@@ -174,13 +174,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   slideTitle: {
+    fontFamily: fonts.display[900],
     fontSize: 38,
-    fontWeight: "900",
     lineHeight: 46,
     letterSpacing: -0.5,
     marginBottom: 14,
   },
-  slideSub: { fontSize: 15, lineHeight: 24, maxWidth: "90%" },
+  slideSub: { fontFamily: fonts.body[400], fontSize: 15, lineHeight: 24, maxWidth: "90%" },
   topBar: {
     position: "absolute",
     top: 0,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  skipText: { fontSize: 14, fontWeight: "500" },
+  skipText: { fontSize: 14, fontFamily: fonts.body[500] },
   bottomBar: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 24, gap: 16 },
   dotsRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   dot: { height: 7, borderRadius: 4 },
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     paddingVertical: 17,
   },
-  nextBtnText: { fontSize: 16, fontWeight: "800", color: "#0D3321" },
+  nextBtnText: { fontSize: 16, fontFamily: fonts.body[800], color: "#052A16" },
   skipRow: { alignItems: "center" },
-  skipLoginText: { fontSize: 14 },
+  skipLoginText: { fontSize: 14, fontFamily: fonts.body[400] },
 });

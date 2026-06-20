@@ -1,0 +1,15 @@
+{
+  "name": "temptations-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Temptations Cafe marketing landing page — Vercel ready",
+  "scripts": {
+    "prepare": "node scripts/prepare.js",
+    "build": "node scripts/prepare.js",
+    "dev": "npx serve . -p 3000"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=20"
+  }
+}

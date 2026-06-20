@@ -18,6 +18,7 @@ export interface Order {
   status: "placed" | "preparing" | "ready" | "delivered";
   pointsEarned: number;
   type: "delivery" | "dine-in";
+  tableId?: string;
 }
 
 export interface Reservation {
@@ -28,6 +29,13 @@ export interface Reservation {
   seating: "indoor" | "outdoor";
   requests: string;
   status: "confirmed" | "pending" | "cancelled";
+  tableId?: string;
+}
+
+export interface StoredCredentials {
+  phone: string;
+  email: string;
+  password: string;
 }
 
 interface UserContextType {
@@ -35,6 +43,7 @@ interface UserContextType {
   orders: Order[];
   reservations: Reservation[];
   favorites: string[];
+  isAuthenticated: boolean;
   updateProfile: (updates: Partial<UserProfile>) => void;
   addOrder: (order: Order) => void;
   addReservation: (r: Reservation) => void;
@@ -43,6 +52,9 @@ interface UserContextType {
   isFavorite: (id: string) => boolean;
   earnPoints: (points: number) => void;
   redeemPoints: (points: number) => boolean;
+  login: (identifier: string, password: string) => Promise<boolean>;
+  signup: (profile: Partial<UserProfile>, password: string) => Promise<boolean>;
+  logout: () => Promise<void>;
 }
 
 const DEFAULT_PROFILE: UserProfile = {
@@ -54,26 +66,64 @@ const DEFAULT_PROFILE: UserProfile = {
   totalOrders: 0,
 };
 
+const AUTH_KEY = "authCredentials";
+const AUTH_SESSION_KEY = "isLoggedIn";
+
+export const DEMO_CREDENTIALS: StoredCredentials = {
+  phone: "+91 98765 43210",
+  email: "demo@temptations.cafe",
+  password: "Demo@1234",
+};
+
+const DEMO_PROFILE: UserProfile = {
+  name: "Demo User",
+  phone: DEMO_CREDENTIALS.phone,
+  email: DEMO_CREDENTIALS.email,
+  loyaltyPoints: 500,
+  referralCode: "TEMPTDEMO",
+  totalOrders: 3,
+};
+
 const UserContext = createContext<UserContextType | undefined>(undefined);
+
+function normalizePhone(input: string) {
+  return input.replace(/\D/g, "").slice(-10);
+}
+
+function isEmail(input: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input);
+}
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<UserProfile>(DEFAULT_PROFILE);
   const [orders, setOrders] = useState<Order[]>([]);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const seedDemoAccount = async () => {
+    const existing = await AsyncStorage.getItem(AUTH_KEY);
+    if (existing) return;
+    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(DEMO_CREDENTIALS));
+    await AsyncStorage.setItem("userProfile", JSON.stringify(DEMO_PROFILE));
+  };
 
   useEffect(() => {
-    Promise.all([
-      AsyncStorage.getItem("userProfile"),
-      AsyncStorage.getItem("orders"),
-      AsyncStorage.getItem("reservations"),
-      AsyncStorage.getItem("favorites"),
-    ]).then(([p, o, r, f]) => {
-      if (p) setProfile(JSON.parse(p));
-      if (o) setOrders(JSON.parse(o));
-      if (r) setReservations(JSON.parse(r));
-      if (f) setFavorites(JSON.parse(f));
-    });
+    seedDemoAccount().then(() =>
+      Promise.all([
+        AsyncStorage.getItem("userProfile"),
+        AsyncStorage.getItem("orders"),
+        AsyncStorage.getItem("reservations"),
+        AsyncStorage.getItem("favorites"),
+        AsyncStorage.getItem(AUTH_SESSION_KEY),
+      ]).then(([p, o, r, f, session]) => {
+        if (p) setProfile(JSON.parse(p));
+        if (o) setOrders(JSON.parse(o));
+        if (r) setReservations(JSON.parse(r));
+        if (f) setFavorites(JSON.parse(f));
+        if (session === "true") setIsAuthenticated(true);
+      })
+    );
   }, []);
 
   const persist = (key: string, value: unknown) =>
@@ -137,6 +187,52 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return true;
   };
 
+  const login = async (identifier: string, password: string): Promise<boolean> => {
+    const stored = await AsyncStorage.getItem(AUTH_KEY);
+    if (!stored) return false;
+    const creds: StoredCredentials = JSON.parse(stored);
+    const input = identifier.trim();
+    const normalizedInput = normalizePhone(input);
+    const normalizedPhone = normalizePhone(creds.phone);
+    const matches =
+      (isEmail(input) && input.toLowerCase() === creds.email.toLowerCase()) ||
+      normalizedInput === normalizedPhone;
+    if (matches && creds.password === password) {
+      setIsAuthenticated(true);
+      await AsyncStorage.setItem(AUTH_SESSION_KEY, "true");
+      return true;
+    }
+    return false;
+  };
+
+  const signup = async (updates: Partial<UserProfile>, password: string): Promise<boolean> => {
+    if (!updates.phone || !updates.email || !password) return false;
+    const newProfile: UserProfile = {
+      ...DEFAULT_PROFILE,
+      ...updates,
+      phone: updates.phone.startsWith("+") ? updates.phone : `+91 ${updates.phone}`,
+      loyaltyPoints: 250,
+      referralCode: `TEMPT${Math.floor(100 + Math.random() * 900)}`,
+      totalOrders: 0,
+    };
+    const creds: StoredCredentials = {
+      phone: newProfile.phone,
+      email: newProfile.email,
+      password,
+    };
+    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(creds));
+    await AsyncStorage.setItem("userProfile", JSON.stringify(newProfile));
+    await AsyncStorage.setItem(AUTH_SESSION_KEY, "true");
+    setProfile(newProfile);
+    setIsAuthenticated(true);
+    return true;
+  };
+
+  const logout = async (): Promise<void> => {
+    await AsyncStorage.removeItem(AUTH_SESSION_KEY);
+    setIsAuthenticated(false);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -144,6 +240,7 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         orders,
         reservations,
         favorites,
+        isAuthenticated,
         updateProfile,
         addOrder,
         addReservation,
@@ -152,6 +249,9 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
         isFavorite,
         earnPoints,
         redeemPoints,
+        login,
+        signup,
+        logout,
       }}
     >
       {children}

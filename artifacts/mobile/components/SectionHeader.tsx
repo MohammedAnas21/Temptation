@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
 
 interface Props {
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 14,
   },
-  title: { fontSize: 20, fontWeight: "800", letterSpacing: -0.3 },
-  subtitle: { fontSize: 12, marginTop: 2 },
-  seeAll: { fontSize: 13, fontWeight: "600" },
+  title: { fontFamily: fonts.display[800], fontSize: 20, letterSpacing: -0.3 },
+  subtitle: { fontFamily: fonts.body[400], fontSize: 12, marginTop: 2 },
+  seeAll: { fontFamily: fonts.body[600], fontSize: 13 },
 });

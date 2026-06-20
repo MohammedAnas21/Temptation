@@ -14,6 +14,7 @@ const fs = require("fs");
 const path = require("path");
 
 const STATIC_ROOT = path.resolve(__dirname, "..", "static-build");
+const APK_DIR = path.resolve(__dirname, "..", "downloads");
 const TEMPLATE_PATH = path.resolve(__dirname, "templates", "landing-page.html");
 const basePath = (process.env.BASE_PATH || "/").replace(/\/+$/, "");
 
@@ -124,6 +125,24 @@ const server = http.createServer((req, res) => {
     if (pathname === "/") {
       return serveLandingPage(req, res, landingPageTemplate, appName);
     }
+  }
+
+  // Serve APK download if available
+  if (pathname === "/downloads/temptations-cafe.apk") {
+    const apkPath = path.join(APK_DIR, "temptations-cafe.apk");
+    if (fs.existsSync(apkPath)) {
+      const stat = fs.statSync(apkPath);
+      res.writeHead(200, {
+        "content-type": "application/vnd.android.package-archive",
+        "content-length": stat.size,
+        "content-disposition": "attachment; filename=temptations-cafe.apk",
+      });
+      fs.createReadStream(apkPath).pipe(res);
+    } else {
+      res.writeHead(404, { "content-type": "application/json" });
+      res.end(JSON.stringify({ error: "APK not built yet" }));
+    }
+    return;
   }
 
   serveStaticFile(pathname, res);

@@ -17,6 +17,7 @@ import { MenuItemCard } from "@/components/MenuItemCard";
 import { LogoBrand } from "@/components/LogoBrand";
 import { useCart } from "@/contexts/CartContext";
 import { categories, menuItems } from "@/constants/menu";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
 import { useLayout } from "@/hooks/useLayout";
 
@@ -44,7 +45,7 @@ export default function MenuScreen() {
   const hp = layout.hp;
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View style={[styles.root, { backgroundColor: colors.background, maxWidth: layout.contentW, width: "100%", alignSelf: "center" }]}>
       <View style={[styles.header, { paddingTop: topPad + 8, paddingHorizontal: hp }]}>
         <LogoBrand variant="mini" />
         <Text style={[styles.title, { color: colors.foreground, fontSize: layout.fs(26) }]}>
@@ -148,8 +149,11 @@ export default function MenuScreen() {
             styles.cartBar,
             {
               backgroundColor: colors.gold,
-              left: hp,
-              right: hp,
+              left: "auto",
+              right: "auto",
+              alignSelf: "center",
+              width: "100%",
+              maxWidth: layout.contentW - hp * 2,
               bottom: Platform.OS === "web" ? 34 : 16,
             },
           ]}
@@ -179,7 +183,7 @@ export default function MenuScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   header: { paddingBottom: 0 },
-  title: { fontWeight: "900", letterSpacing: -0.5, marginBottom: 12 },
+  title: { fontFamily: fonts.display[900], letterSpacing: -0.5, marginBottom: 12 },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
@@ -189,13 +193,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     gap: 8,
   },
-  searchInput: { flex: 1 },
+  searchInput: { flex: 1, fontFamily: fonts.body[400] },
   catPill: { borderRadius: 20, borderWidth: 1, paddingHorizontal: 14, paddingVertical: 7 },
-  catText: {},
+  catText: { fontFamily: fonts.body[500] },
   list: { paddingTop: 4 },
   row: { gap: 12, marginBottom: 0 },
   empty: { flex: 1, justifyContent: "center", alignItems: "center", gap: 12 },
-  emptyText: {},
+  emptyText: { fontFamily: fonts.body[400] },
   cartBar: {
     position: "absolute",
     borderRadius: 16,
@@ -207,8 +211,8 @@ const styles = StyleSheet.create({
   },
   cartBarLeft: { flexDirection: "row", alignItems: "center", gap: 10 },
   cartCount: { width: 26, height: 26, borderRadius: 13, justifyContent: "center", alignItems: "center" },
-  cartCountText: { fontSize: 12, fontWeight: "800", color: "#000" },
-  cartBarText: { fontWeight: "700", color: "#000" },
+  cartCountText: { fontSize: 12, fontFamily: fonts.mono[700], color: "#000" },
+  cartBarText: { fontFamily: fonts.body[700], color: "#000" },
   cartBarRight: { flexDirection: "row", alignItems: "center", gap: 6 },
-  cartBarTotal: { fontWeight: "800", color: "#000" },
+  cartBarTotal: { fontFamily: fonts.mono[700], color: "#000" },
 });

@@ -12,6 +12,7 @@ import {
 import { useCart } from "@/contexts/CartContext";
 import { useUser } from "@/contexts/UserContext";
 import { MenuItem } from "@/constants/menu";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
 import { useLayout } from "@/hooks/useLayout";
 
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 3,
   },
-  badgeText: { fontSize: 10, fontWeight: "700", color: "#000" },
+  badgeText: { fontSize: 10, fontFamily: fonts.mono[700], color: "#052A16" },
   favBtn: {
     position: "absolute",
     top: 8,
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
   },
   content: { padding: 10 },
   nameRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 4 },
-  name: { fontWeight: "700", flex: 1 },
+  name: { fontFamily: fonts.body[700], flex: 1 },
   vegDot: {
     width: 13,
     height: 13,
@@ -205,10 +206,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   vegInner: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#4CAF50" },
-  desc: { lineHeight: 15, marginBottom: 4 },
-  cals: { marginBottom: 8 },
+  desc: { fontFamily: fonts.body[400], lineHeight: 15, marginBottom: 4 },
+  cals: { fontFamily: fonts.mono[400], marginBottom: 8 },
   bottom: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  price: { fontWeight: "800" },
+  price: { fontFamily: fonts.mono[700] },
   addBtn: { width: 28, height: 28, borderRadius: 9, justifyContent: "center", alignItems: "center" },
   qtyRow: {
     flexDirection: "row",
@@ -219,13 +220,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
     paddingVertical: 4,
   },
-  qtyText: { fontSize: 13, fontWeight: "700", minWidth: 14, textAlign: "center" },
+  qtyText: { fontSize: 13, fontFamily: fonts.mono[700], minWidth: 14, textAlign: "center" },
   hCard: { flexDirection: "row", borderRadius: 14, borderWidth: 1, overflow: "hidden", marginBottom: 10 },
   hImage: { width: 100, height: 100 },
   hContent: { flex: 1, padding: 10, justifyContent: "space-between" },
   hTop: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" },
-  hName: { fontWeight: "700", flex: 1, marginRight: 6 },
-  hDesc: { lineHeight: 16 },
+  hName: { fontFamily: fonts.body[700], flex: 1, marginRight: 6 },
+  hDesc: { fontFamily: fonts.body[400], lineHeight: 16 },
   hBottom: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  hPrice: { fontWeight: "800" },
+  hPrice: { fontFamily: fonts.mono[700] },
 });

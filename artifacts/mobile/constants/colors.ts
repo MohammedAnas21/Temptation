@@ -1,79 +1,94 @@
 /**
  * Temptations Cafe brand palette
- * Extracted from official logo:
- *  - Deep Forest Green background: #0D3321
- *  - Antique Gold accent: #C8A028
- *  - Ivory / Cream text: #F5F0E8
+ * From official brand guide:
+ *  - Greens:  #021A0D (950), #052A16 (900), #0A4424 (800), #135A30 (700)
+ *  - Golds:   #F0CC8D (300), #DDB56C (400), #C79A4E (500), #A87B38 (600)
+ *  - Ivory:   #FAF6EC (50),  #F4F1E5 (100), #F3E8D2 (200)
+ *  - Ink:     #1C1610 (900)
  */
 const colors = {
   light: {
-    text: "#0D3321",
-    tint: "#C8A028",
-    background: "#F5F0E8",
-    foreground: "#0D3321",
-    card: "#EDEAE2",
-    cardForeground: "#0D3321",
-    primary: "#C8A028",
-    primaryForeground: "#0D3321",
-    secondary: "#D4E8DC",
-    secondaryForeground: "#0D3321",
-    muted: "#E0DDD6",
-    mutedForeground: "#5A7A67",
-    accent: "#D4AF37",
-    accentForeground: "#0D3321",
+    /* ── Core ── */
+    text: "#1C1610",
+    tint: "#C79A4E",
+    background: "#FAF6EC",
+    foreground: "#1C1610",
+    card: "#F4F1E5",
+    cardForeground: "#1C1610",
+    primary: "#C79A4E",
+    primaryForeground: "#FAF6EC",
+    secondary: "#F3E8D2",
+    secondaryForeground: "#1C1610",
+    muted: "#EDE8DC",
+    mutedForeground: "#7A7066",
+    accent: "#C79A4E",
+    accentForeground: "#FAF6EC",
     destructive: "#C62828",
-    destructiveForeground: "#ffffff",
-    border: "#C8C0A8",
-    input: "#C8C0A8",
-    gold: "#C8A028",
-    goldLight: "#D4AF37",
-    goldDim: "rgba(200,160,40,0.15)",
-    emerald: "#1A5C38",
-    emeraldLight: "#2D8A56",
-    emeraldDim: "rgba(45,138,86,0.15)",
-    ivory: "#F5F0E8",
-    surface: "rgba(13,51,33,0.05)",
-    surfaceHover: "rgba(13,51,33,0.08)",
-    secondary2: "#D4E8DC",
-    cardElevated: "#E5E0D8",
+    destructiveForeground: "#FAF6EC",
+    border: "#E5DDD0",
+    input: "#E5DDD0",
+
+    /* ── Brand gold palette ── */
+    gold: "#C79A4E",
+    goldLight: "#DDB56C",
+    goldDim: "rgba(199,154,78,0.18)",
+
+    /* ── Brand green palette ── */
+    emerald: "#135A30",
+    emeraldLight: "#1A7A42",
+    emeraldDim: "rgba(19,90,48,0.15)",
+
+    /* ── Surfaces ── */
+    ivory: "#FAF6EC",
+    surface: "rgba(28,22,16,0.04)",
+    surfaceHover: "rgba(28,22,16,0.08)",
+    secondary2: "#F3E8D2",
+    cardElevated: "#EDE5D5",
   },
   dark: {
-    text: "#F5F0E8",
-    tint: "#C8A028",
-    /* ── Core surfaces (matched to logo) ── */
-    background: "#0D3321",   /* deep forest green — logo bg */
-    foreground: "#F5F0E8",   /* ivory cream */
-    card: "#0F3D27",         /* slightly lighter forest green */
-    cardForeground: "#F5F0E8",
-    cardElevated: "#133F2A", /* elevated cards */
+    text: "#FAF6EC",
+    tint: "#F0CC8D",
+
+    /* ── Core surfaces ── */
+    background: "#052A16",   /* green-900 — primary dark bg */
+    foreground: "#FAF6EC",   /* ivory-50 */
+    card: "#0A4424",         /* green-800 */
+    cardForeground: "#FAF6EC",
+    cardElevated: "#0F4D2B",
+
     /* ── Brand primaries ── */
-    primary: "#C8A028",      /* antique gold — logo gold */
-    primaryForeground: "#0D3321",
-    secondary: "#0A2C1C",    /* deeper forest green */
-    secondaryForeground: "#F5F0E8",
+    primary: "#F0CC8D",      /* gold-300 */
+    primaryForeground: "#052A16",
+    secondary: "#021A0D",    /* green-950 */
+    secondaryForeground: "#FAF6EC",
+
     /* ── Neutrals ── */
-    muted: "#0A2C1C",
-    mutedForeground: "#7AAD8A", /* muted sage green */
+    muted: "#021A0D",
+    mutedForeground: "#87A893",
+
     /* ── Accents ── */
-    accent: "#D4AF37",       /* bright gold highlight */
-    accentForeground: "#0D3321",
+    accent: "#DDB56C",
+    accentForeground: "#052A16",
+
     /* ── Gold palette ── */
-    gold: "#C8A028",
-    goldLight: "#D4AF37",
-    goldDim: "rgba(200,160,40,0.14)",
+    gold: "#F0CC8D",
+    goldLight: "#DDB56C",
+    goldDim: "rgba(240,204,141,0.16)",
+
     /* ── Emerald palette ── */
-    emerald: "#1A4D30",
-    emeraldLight: "#2D7A50",
-    emeraldDim: "rgba(45,122,80,0.2)",
+    emerald: "#135A30",
+    emeraldLight: "#1A7A42",
+    emeraldDim: "rgba(26,122,66,0.2)",
+
     /* ── UI ── */
-    ivory: "#F5F0E8",
-    border: "#1C4D30",
-    input: "#1C4D30",
+    ivory: "#FAF6EC",
+    border: "#135A30",
+    input: "#135A30",
     destructive: "#C62828",
-    destructiveForeground: "#ffffff",
-    surface: "rgba(245,240,232,0.05)",
-    surfaceHover: "rgba(245,240,232,0.08)",
-    secondary2: "#0A2C1C",
+    destructiveForeground: "#FAF6EC",
+    surface: "rgba(250,246,236,0.04)",
+    surfaceHover: "rgba(250,246,236,0.08)",
+    secondary2: "#021A0D",
   },
   radius: 14,
 };

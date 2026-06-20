@@ -16,11 +16,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useCart } from "@/contexts/CartContext";
 import { useUser } from "@/contexts/UserContext";
 import { menuItems } from "@/constants/menu";
+import fonts from "@/constants/fonts";
 import { useColors } from "@/hooks/useColors";
+import { useLayout } from "@/hooks/useLayout";
 
 export default function ItemDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const colors = useColors();
+  const layout = useLayout();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { addItem, items, updateQuantity } = useCart();
@@ -66,7 +69,7 @@ export default function ItemDetailScreen() {
   const starRating = item.rating ?? 4.5;
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.background }]}>
+    <View style={[styles.root, { backgroundColor: colors.background, maxWidth: layout.contentW, width: "100%", alignSelf: "center" }]}>
       <View style={styles.imageContainer}>
         <Image source={item.image} style={styles.heroImage} resizeMode="cover" />
         <View style={styles.imageGrad} />
@@ -215,13 +218,13 @@ export default function ItemDetailScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1 },
   notFound: { flex: 1, justifyContent: "center", alignItems: "center", gap: 12 },
-  notFoundText: { fontSize: 18 },
-  backText: { fontSize: 16, fontWeight: "600" },
+  notFoundText: { fontSize: 18, fontFamily: fonts.body[400] },
+  backText: { fontSize: 16, fontFamily: fonts.body[600] },
   imageContainer: { height: 300, position: "relative" },
   heroImage: { width: "100%", height: "100%" },
   imageGrad: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(7,15,12,0.35)",
+    position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: "rgba(5,42,22,0.35)",
   },
   imageTopBar: {
     position: "absolute",
@@ -248,32 +251,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 5,
   },
-  heroBadgeText: { fontSize: 12, fontWeight: "800", color: "#000" },
+  heroBadgeText: { fontSize: 12, fontFamily: fonts.mono[700], color: "#052A16" },
   scroll: { flex: 1 },
   content: { padding: 20 },
   nameRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 12 },
-  name: { fontSize: 26, fontWeight: "900", flex: 1, letterSpacing: -0.3 },
+  name: { fontSize: 26, fontFamily: fonts.display[900], flex: 1, letterSpacing: -0.3 },
   vegDot: { width: 18, height: 18, borderRadius: 3, borderWidth: 2, justifyContent: "center", alignItems: "center" },
   vegInner: { width: 9, height: 9, borderRadius: 5, backgroundColor: "#4CAF50" },
   metaRow: { flexDirection: "row", gap: 8, marginBottom: 16 },
   ratingPill: { flexDirection: "row", alignItems: "center", gap: 5, borderWidth: 1, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 5 },
-  ratingText: { fontSize: 13, fontWeight: "700" },
+  ratingText: { fontSize: 13, fontFamily: fonts.mono[700] },
   metaChip: { flexDirection: "row", alignItems: "center", gap: 5, borderRadius: 20, paddingHorizontal: 10, paddingVertical: 5 },
-  metaChipText: { fontSize: 12, fontWeight: "600" },
-  description: { fontSize: 14, lineHeight: 22, marginBottom: 24 },
+  metaChipText: { fontSize: 12, fontFamily: fonts.mono[400] },
+  description: { fontSize: 14, fontFamily: fonts.body[400], lineHeight: 22, marginBottom: 24 },
   addOnsSection: { marginBottom: 24 },
-  sectionTitle: { fontSize: 17, fontWeight: "800", marginBottom: 4 },
-  sectionSub: { fontSize: 12, marginBottom: 12 },
+  sectionTitle: { fontSize: 17, fontFamily: fonts.display[800], marginBottom: 4 },
+  sectionSub: { fontSize: 12, fontFamily: fonts.body[400], marginBottom: 12 },
   addOnRow: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 12, borderWidth: 1, padding: 14, marginBottom: 8 },
   addOnCheck: { width: 22, height: 22, borderRadius: 6, borderWidth: 1.5, justifyContent: "center", alignItems: "center" },
-  addOnName: { flex: 1, fontSize: 14, fontWeight: "500" },
-  addOnPrice: { fontSize: 14, fontWeight: "700" },
+  addOnName: { flex: 1, fontSize: 14, fontFamily: fonts.body[500] },
+  addOnPrice: { fontSize: 14, fontFamily: fonts.mono[700] },
   nutritionCard: { borderRadius: 14, borderWidth: 1, padding: 16, marginBottom: 8 },
   nutritionGrid: { flexDirection: "row", gap: 8, marginTop: 12 },
   nutritionItem: { flex: 1, alignItems: "center", borderRadius: 10, padding: 12, gap: 2 },
-  nutritionVal: { fontSize: 16, fontWeight: "800" },
-  nutritionUnit: { fontSize: 10 },
-  nutritionLabel: { fontSize: 10 },
+  nutritionVal: { fontSize: 16, fontFamily: fonts.mono[700] },
+  nutritionUnit: { fontSize: 10, fontFamily: fonts.body[400] },
+  nutritionLabel: { fontSize: 10, fontFamily: fonts.body[400] },
   bottomBar: {
     position: "absolute",
     bottom: 0,
@@ -287,11 +290,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   priceWrap: {},
-  priceLabel: { fontSize: 12 },
-  price: { fontSize: 26, fontWeight: "900" },
+  priceLabel: { fontSize: 12, fontFamily: fonts.body[400] },
+  price: { fontSize: 26, fontFamily: fonts.mono[700] },
   qtyGroup: { flexDirection: "row", alignItems: "center", gap: 14 },
   qtyBtn: { width: 44, height: 44, borderRadius: 14, borderWidth: 1, justifyContent: "center", alignItems: "center" },
-  qtyNum: { fontSize: 20, fontWeight: "800", minWidth: 28, textAlign: "center" },
+  qtyNum: { fontSize: 20, fontFamily: fonts.mono[700], minWidth: 28, textAlign: "center" },
   addToCartBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -300,5 +303,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 15,
   },
-  addToCartText: { fontSize: 16, fontWeight: "800", color: "#000" },
+  addToCartText: { fontSize: 16, fontFamily: fonts.body[800], color: "#052A16" },
 });

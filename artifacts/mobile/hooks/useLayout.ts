@@ -28,7 +28,7 @@ export function useLayout() {
     const contentPadL = isTablet ? (width - contentW) / 2 : 0;
 
     /* ── Hero image height ── */
-    const heroH = Math.max(280, Math.min(500, height * 0.44));
+    const heroH = Math.max(isSmallPhone ? 280 : 340, Math.min(500, height * 0.44));
 
     /* ── Menu grid ── */
     const menuCols = isTablet ? 3 : 2;

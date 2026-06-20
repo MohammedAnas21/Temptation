@@ -47,3 +47,10 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Generated / large binaries
+*.apk
+artifacts/mobile/downloads/
+landing/index.html
+landing/images/
+landing/temptations-cafe.apk
