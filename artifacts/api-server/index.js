@@ -8900,6 +8900,9 @@ app.use((0, import_cors.default)());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api", routes_default);
+app.get("/", (_req, res) => {
+  res.json({ message: "Temptations Cafe API is running!", health: "/api/healthz" });
+});
 var app_default = app;
 
 // src/index.ts

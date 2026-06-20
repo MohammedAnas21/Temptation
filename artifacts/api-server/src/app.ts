@@ -31,4 +31,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
+app.get("/", (_req, res) => {
+  res.json({ message: "Temptations Cafe API is running!", health: "/api/healthz" });
+});
+
 export default app;
