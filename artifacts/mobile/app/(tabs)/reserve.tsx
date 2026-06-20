@@ -96,7 +96,7 @@ export default function ReserveScreen() {
   const [selectedTable, setSelectedTable] = useState<string | null>(null);
   const [privatePreferred, setPrivatePreferred] = useState(false);
 
-  const tabBarH = Platform.OS === "web" ? 84 : Platform.OS === "ios" ? 49 : 56;
+  const tabBarH = Platform.OS === "web" ? 84 : Platform.OS === "ios" ? 49 + insets.bottom : 56 + insets.bottom;
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const bottomPad = Platform.OS === "web" ? 34 : insets.bottom;
   const hp = layout.hp;
@@ -185,7 +185,7 @@ export default function ReserveScreen() {
 
       <View style={styles.scrollArea}>
         {showHistory ? (
-          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: hp, gap: 12, paddingBottom: 24 }} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: hp, gap: 12, paddingBottom: tabBarH + 24 }} showsVerticalScrollIndicator={false}>
             {reservations.length === 0 ? (
               <View style={styles.emptyState}>
                 <Feather name="calendar" size={40} color={colors.mutedForeground} />
@@ -224,7 +224,7 @@ export default function ReserveScreen() {
             )}
           </ScrollView>
         ) : (
-          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: tabBarH + 90 }} showsVerticalScrollIndicator={false}>
             <View style={{ paddingHorizontal: hp, marginBottom: 16 }}>
               <View style={[styles.tabToggle, { backgroundColor: colors.card, borderColor: colors.border }]}>
                 {(["visual", "picker"] as const).map((t) => (

@@ -56,6 +56,7 @@ export default function OrdersScreen() {
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const bottomPad = Platform.OS === "web" ? 34 : insets.bottom;
+  const tabBarH = Platform.OS === "web" ? 84 : Platform.OS === "ios" ? 49 + insets.bottom : 56 + insets.bottom;
   const hp = layout.hp;
 
   const handleApplyCoupon = () => {
@@ -152,7 +153,7 @@ export default function OrdersScreen() {
           ) : (
             <ScrollView
               style={{ flex: 1 }}
-              contentContainerStyle={{ paddingBottom: 24 }}
+              contentContainerStyle={{ paddingBottom: tabBarH + 90 }}
               showsVerticalScrollIndicator={false}
             >
             <View style={{ paddingHorizontal: hp, gap: 10, marginTop: 16 }}>
@@ -384,7 +385,7 @@ export default function OrdersScreen() {
           keyExtractor={(o) => o.id}
           contentContainerStyle={{
             paddingHorizontal: hp,
-            paddingBottom: Platform.OS === "web" ? 100 : 80,
+            paddingBottom: Platform.OS === "web" ? 100 : tabBarH + 24,
             paddingTop: 16,
             gap: 12,
           }}
@@ -440,7 +441,7 @@ export default function OrdersScreen() {
       </View>
 
       {activeTab === "cart" && items.length > 0 && (
-        <View style={[styles.placeOrderBar, { paddingBottom: bottomPad + 12, paddingHorizontal: hp, maxWidth: layout.contentW, width: "100%", left: "auto", right: "auto", alignSelf: "center" }]}>
+        <View style={[styles.placeOrderBar, { paddingBottom: tabBarH + 12, paddingHorizontal: hp, maxWidth: layout.contentW, width: "100%", left: "auto", right: "auto", alignSelf: "center" }]}>
           <Pressable
             onPress={handlePlaceOrder}
             style={[styles.placeOrderBtn, { backgroundColor: colors.gold }]}

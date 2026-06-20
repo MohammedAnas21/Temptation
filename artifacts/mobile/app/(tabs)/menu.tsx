@@ -42,6 +42,7 @@ export default function MenuScreen() {
   }, [activeCategory, search]);
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
+  const tabBarH = Platform.OS === "web" ? 84 : Platform.OS === "ios" ? 49 + insets.bottom : 56 + insets.bottom;
   const hp = layout.hp;
 
   return (
@@ -128,7 +129,7 @@ export default function MenuScreen() {
             styles.list,
             {
               paddingHorizontal: hp,
-              paddingBottom: itemCount > 0 ? 110 : Platform.OS === "web" ? 100 : 80,
+              paddingBottom: itemCount > 0 ? tabBarH + 90 : Platform.OS === "web" ? 100 : tabBarH + 30,
             },
           ]}
           showsVerticalScrollIndicator={false}
@@ -154,7 +155,7 @@ export default function MenuScreen() {
               alignSelf: "center",
               width: "100%",
               maxWidth: layout.contentW - hp * 2,
-              bottom: Platform.OS === "web" ? 34 : 16,
+              bottom: Platform.OS === "web" ? 34 : tabBarH + 16,
             },
           ]}
         >

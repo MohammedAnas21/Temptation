@@ -31,6 +31,7 @@ export default function ProfileScreen() {
   const [activeSection, setActiveSection] = useState<"main" | "favorites" | "history">("main");
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
+  const tabBarH = Platform.OS === "web" ? 84 : Platform.OS === "ios" ? 49 + insets.bottom : 56 + insets.bottom;
   const hp = layout.hp;
 
   const favoriteItems = menuItems.filter((i) => favorites.includes(i.id));
@@ -101,7 +102,7 @@ export default function ProfileScreen() {
             <Text style={[styles.emptySub, { color: colors.mutedForeground }]}>Tap the heart on any menu item to save it here</Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={{ padding: hp, paddingBottom: 80, gap: 10 }}>
+          <ScrollView contentContainerStyle={{ padding: hp, paddingBottom: tabBarH + 24, gap: 10 }}>
             {favoriteItems.map((item) => (
               <MenuItemCard key={item.id} item={item} horizontal />
             ))}
@@ -115,7 +116,7 @@ export default function ProfileScreen() {
             <Text style={[styles.emptySub, { color: colors.mutedForeground }]}>Your order history will appear here</Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={{ padding: hp, paddingBottom: 80, gap: 12 }}>
+          <ScrollView contentContainerStyle={{ padding: hp, paddingBottom: tabBarH + 24, gap: 12 }}>
             {orders.map((order) => (
               <View key={order.id} style={[styles.orderCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
                 <Text style={[styles.orderDate, { color: colors.foreground }]}>{order.date}</Text>
@@ -131,7 +132,7 @@ export default function ProfileScreen() {
           </ScrollView>
         )
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Platform.OS === "web" ? 100 : 80, paddingHorizontal: hp }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Platform.OS === "web" ? 100 : tabBarH + 24, paddingHorizontal: hp }}>
           <View style={styles.profileCard}>
             <View style={[styles.avatar, { backgroundColor: colors.goldDim, borderColor: colors.gold + "44" }]}>
               <Text style={[styles.avatarText, { color: colors.gold }]}>{profile.name[0]}</Text>
