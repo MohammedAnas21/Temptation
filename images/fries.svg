@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <rect width="400" height="300" fill="#143620" rx="12"/>
+  <ellipse cx="200" cy="255" rx="90" ry="14" fill="#0a1f10" opacity="0.6"/>
+  <path d="M130 120h140l-20 110H150L130 120z" fill="#d4a056"/>
+  <path d="M135 125h130l-17 100H152L135 125z" fill="#e8b85c"/>
+  <path d="M150 120v-60a8 8 0 0 1 16 0v60" fill="#f4d03f" stroke="#d4a056" stroke-width="3"/>
+  <path d="M175 120v-70a8 8 0 0 1 16 0v70" fill="#f4d03f" stroke="#d4a056" stroke-width="3"/>
+  <path d="M200 120V55a8 8 0 0 1 16 0v65" fill="#f4d03f" stroke="#d4a056" stroke-width="3"/>
+  <path d="M225 120v-60a8 8 0 0 1 16 0v60" fill="#f4d03f" stroke="#d4a056" stroke-width="3"/>
+  <path d="M250 120v-45a8 8 0 0 1 16 0v45" fill="#f4d03f" stroke="#d4a056" stroke-width="3"/>
+  <path d="M140 120h120" stroke="#b88a48" stroke-width="4" stroke-linecap="round"/>
+  <path d="M155 120l-10 105M185 120l-5 105M215 120l5 105M245 120l10 105" stroke="#c99b52" stroke-width="2"/>
+  <text x="200" y="90" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#f4f1e5" font-weight="600" letter-spacing="2">SALTED</text>
+</svg>
