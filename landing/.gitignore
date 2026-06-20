@@ -2,3 +2,4 @@ node_modules/
 .vercel/
 *.apk
 index.html
+.vercel

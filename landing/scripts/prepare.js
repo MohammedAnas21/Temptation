@@ -2,12 +2,18 @@ const fs = require("fs");
 const path = require("path");
 
 const rootDir = path.resolve(__dirname, "..");
-const sourceHtml = path.resolve(rootDir, "..", "temptations-cafe.html");
 const outputHtml = path.join(rootDir, "index.html");
 const sourceApk = path.resolve(rootDir, "..", "artifacts", "mobile", "downloads", "temptations-cafe.apk");
 const localApk = path.join(rootDir, "temptations-cafe.apk");
 const sourceImages = path.resolve(rootDir, "..", "images");
 const localImages = path.join(rootDir, "images");
+
+// Source HTML can live next to this script during a Vercel-only deploy,
+// or in the monorepo root during local development.
+const sourceHtml =
+  [path.join(rootDir, "temptations-cafe.html"), path.resolve(rootDir, "..", "temptations-cafe.html")].find((p) =>
+    fs.existsSync(p),
+  ) || path.resolve(rootDir, "..", "temptations-cafe.html");
 
 const apkUrl = process.env.APK_DOWNLOAD_URL?.trim() || "";
 
@@ -15,6 +21,7 @@ function main() {
   if (!fs.existsSync(sourceHtml)) {
     throw new Error(`Source landing page not found: ${sourceHtml}`);
   }
+  console.log("✓ Source landing page:", sourceHtml);
 
   let html = fs.readFileSync(sourceHtml, "utf-8");
 
