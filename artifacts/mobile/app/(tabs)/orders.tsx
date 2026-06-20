@@ -153,7 +153,7 @@ export default function OrdersScreen() {
           ) : (
             <ScrollView
               style={{ flex: 1 }}
-              contentContainerStyle={{ paddingBottom: tabBarH + 90 }}
+              contentContainerStyle={{ paddingBottom: tabBarH + 140 }}
               showsVerticalScrollIndicator={false}
             >
             <View style={{ paddingHorizontal: hp, gap: 10, marginTop: 16 }}>
@@ -441,7 +441,7 @@ export default function OrdersScreen() {
       </View>
 
       {activeTab === "cart" && items.length > 0 && (
-        <View style={[styles.placeOrderBar, { paddingBottom: tabBarH + 12, paddingHorizontal: hp, maxWidth: layout.contentW, width: "100%", left: "auto", right: "auto", alignSelf: "center" }]}>
+        <View style={[styles.placeOrderBar, { backgroundColor: colors.background, borderTopColor: colors.border, paddingHorizontal: hp, paddingBottom: 12, bottom: tabBarH, maxWidth: layout.contentW, width: "100%", left: "auto", right: "auto", alignSelf: "center" }]}>
           <Pressable
             onPress={handlePlaceOrder}
             style={[styles.placeOrderBtn, { backgroundColor: colors.gold }]}
@@ -568,7 +568,14 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   pointsText: { fontFamily: fonts.body[700] },
-  placeOrderBar: { paddingTop: 12 },
+  placeOrderBar: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    zIndex: 50,
+  },
   placeOrderBtn: {
     flexDirection: "row",
     alignItems: "center",

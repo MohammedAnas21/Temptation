@@ -224,7 +224,7 @@ export default function ReserveScreen() {
             )}
           </ScrollView>
         ) : (
-          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: tabBarH + 90 }} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: tabBarH + 140 }} showsVerticalScrollIndicator={false}>
             <View style={{ paddingHorizontal: hp, marginBottom: 16 }}>
               <View style={[styles.tabToggle, { backgroundColor: colors.card, borderColor: colors.border }]}>
                 {(["visual", "picker"] as const).map((t) => (
@@ -457,7 +457,7 @@ export default function ReserveScreen() {
       </View>
 
       {!showHistory && (
-        <View style={[styles.confirmBar, { backgroundColor: colors.background, borderTopColor: colors.border, paddingHorizontal: hp, paddingBottom: bottomPad + 8, bottom: tabBarH }]}>
+        <View style={[styles.confirmBar, { backgroundColor: colors.background, borderTopColor: colors.border, paddingHorizontal: hp, paddingBottom: 12, bottom: tabBarH }]}>
           {selectedTable && (
             <View style={[styles.tableSelectedPill, { backgroundColor: colors.emerald, borderColor: colors.emeraldLight + "44" }]}>
               <Feather name="check-circle" size={13} color={colors.emeraldLight} />
