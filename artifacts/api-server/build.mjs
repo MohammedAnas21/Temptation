@@ -16,15 +16,14 @@ globalThis.require = createRequire(import.meta.url);
 const artifactDir = path.dirname(fileURLToPath(import.meta.url));
 
 async function buildAll() {
-  const apiDir = path.resolve(artifactDir, "api");
-  await rm(apiDir, { recursive: true, force: true });
+  const outputDir = path.resolve(artifactDir, ".");
 
   await esbuild({
     entryPoints: [path.resolve(artifactDir, "src/index.ts")],
     platform: "node",
     bundle: true,
     format: "esm",
-    outdir: apiDir,
+    outdir: outputDir,
     outExtension: { ".js": ".js" },
     logLevel: "info",
     // Some packages may not be bundleable, so we externalize them, we can add more here as needed.
