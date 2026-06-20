@@ -18,14 +18,17 @@ import { useUser } from "@/contexts/UserContext";
 import { menuItems } from "@/constants/menu";
 import { MenuItemCard } from "@/components/MenuItemCard";
 import { useColors } from "@/hooks/useColors";
+import { useLayout } from "@/hooks/useLayout";
 
 export default function ProfileScreen() {
   const colors = useColors();
+  const layout = useLayout();
   const insets = useSafeAreaInsets();
   const { profile, orders, reservations, favorites } = useUser();
   const [activeSection, setActiveSection] = useState<"main" | "favorites" | "history">("main");
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
+  const hp = layout.hp;
 
   const favoriteItems = menuItems.filter((i) => favorites.includes(i.id));
   const loyaltyLevel = profile.loyaltyPoints >= 1000 ? "Gold" : profile.loyaltyPoints >= 500 ? "Silver" : "Bronze";
@@ -58,7 +61,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { paddingTop: topPad + 8 }]}>
+      <View style={[styles.header, { paddingTop: topPad + 8, paddingHorizontal: hp }]}>
         <LogoBrand variant="mini" />
         <View style={styles.headerRow}>
           <Text style={[styles.title, { color: colors.foreground }]}>
@@ -80,7 +83,7 @@ export default function ProfileScreen() {
             <Text style={[styles.emptySub, { color: colors.mutedForeground }]}>Tap the heart on any menu item to save it here</Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 80, gap: 10 }}>
+          <ScrollView contentContainerStyle={{ padding: hp, paddingBottom: 80, gap: 10 }}>
             {favoriteItems.map((item) => (
               <MenuItemCard key={item.id} item={item} horizontal />
             ))}
@@ -94,7 +97,7 @@ export default function ProfileScreen() {
             <Text style={[styles.emptySub, { color: colors.mutedForeground }]}>Your order history will appear here</Text>
           </View>
         ) : (
-          <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 80, gap: 12 }}>
+          <ScrollView contentContainerStyle={{ padding: hp, paddingBottom: 80, gap: 12 }}>
             {orders.map((order) => (
               <View key={order.id} style={[styles.orderCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
                 <Text style={[styles.orderDate, { color: colors.foreground }]}>{order.date}</Text>
@@ -110,7 +113,7 @@ export default function ProfileScreen() {
           </ScrollView>
         )
       ) : (
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Platform.OS === "web" ? 100 : 80 }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: Platform.OS === "web" ? 100 : 80, paddingHorizontal: hp }}>
           <View style={styles.profileCard}>
             <View style={[styles.avatar, { backgroundColor: colors.goldDim, borderColor: colors.gold + "44" }]}>
               <Text style={[styles.avatarText, { color: colors.gold }]}>{profile.name[0]}</Text>
@@ -221,7 +224,7 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  header: { paddingHorizontal: 20, paddingBottom: 8 },
+  header: { paddingBottom: 8 },
   headerRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   title: { fontSize: 28, fontWeight: "900", letterSpacing: -0.5 },
   profileCard: { alignItems: "center", paddingVertical: 24, paddingHorizontal: 20 },
@@ -231,7 +234,7 @@ const styles = StyleSheet.create({
   phone: { fontSize: 14, marginBottom: 10 },
   levelPill: { flexDirection: "row", alignItems: "center", gap: 6, borderWidth: 1, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5 },
   levelText: { fontSize: 13, fontWeight: "700" },
-  loyaltyCard: { marginHorizontal: 20, marginBottom: 16, borderRadius: 16, borderWidth: 1, padding: 18 },
+  loyaltyCard: { marginBottom: 16, borderRadius: 16, borderWidth: 1, padding: 18 },
   loyaltyTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 },
   loyaltyPoints: { fontSize: 36, fontWeight: "900", letterSpacing: -1 },
   loyaltyLabel: { fontSize: 12, marginTop: 2 },
@@ -243,14 +246,14 @@ const styles = StyleSheet.create({
   redeemOption: { flex: 1, borderWidth: 1, borderRadius: 10, padding: 10, alignItems: "center" },
   redeemVal: { fontSize: 13, fontWeight: "800" },
   redeemDesc: { fontSize: 10, marginTop: 2 },
-  referCard: { marginHorizontal: 20, marginBottom: 16, borderRadius: 16, borderWidth: 1, padding: 18, flexDirection: "row", alignItems: "center" },
+  referCard: { marginBottom: 16, borderRadius: 16, borderWidth: 1, padding: 18, flexDirection: "row", alignItems: "center" },
   referLeft: { flex: 1, gap: 6 },
   referTitle: { fontSize: 16, fontWeight: "800" },
   referSub: { fontSize: 12, lineHeight: 17 },
   codePill: { flexDirection: "row", alignItems: "center", gap: 6, borderWidth: 1, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6, alignSelf: "flex-start" },
   codeText: { fontSize: 13, fontWeight: "700", letterSpacing: 1 },
   shareBtn: { width: 46, height: 46, borderRadius: 23, justifyContent: "center", alignItems: "center", marginLeft: 12 },
-  menuList: { marginHorizontal: 20, marginBottom: 16, borderRadius: 16, borderWidth: 1, overflow: "hidden" },
+  menuList: { marginBottom: 16, borderRadius: 16, borderWidth: 1, overflow: "hidden" },
   menuItem: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 12 },
   menuIcon: { width: 36, height: 36, borderRadius: 10, justifyContent: "center", alignItems: "center" },
   menuInfo: { flex: 1 },
@@ -260,7 +263,7 @@ const styles = StyleSheet.create({
   countBadge: { borderRadius: 20, paddingHorizontal: 8, paddingVertical: 2 },
   countText: { fontSize: 12, fontWeight: "700" },
   divider: { height: 1, marginLeft: 64 },
-  cafeInfo: { marginHorizontal: 20, marginBottom: 20, borderRadius: 14, borderWidth: 1, padding: 16, flexDirection: "row", alignItems: "center", gap: 12 },
+  cafeInfo: { marginBottom: 20, borderRadius: 14, borderWidth: 1, padding: 16, flexDirection: "row", alignItems: "center", gap: 12 },
   cafeInfoText: { flex: 1 },
   cafeInfoTitle: { fontSize: 14, fontWeight: "700", marginBottom: 3 },
   cafeInfoSub: { fontSize: 12 },

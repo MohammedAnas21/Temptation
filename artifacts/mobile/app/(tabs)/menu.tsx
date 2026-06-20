@@ -6,7 +6,6 @@ import {
   FlatList,
   Platform,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -19,9 +18,11 @@ import { LogoBrand } from "@/components/LogoBrand";
 import { useCart } from "@/contexts/CartContext";
 import { categories, menuItems } from "@/constants/menu";
 import { useColors } from "@/hooks/useColors";
+import { useLayout } from "@/hooks/useLayout";
 
 export default function MenuScreen() {
   const colors = useColors();
+  const layout = useLayout();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { itemCount, total } = useCart();
@@ -40,16 +41,19 @@ export default function MenuScreen() {
   }, [activeCategory, search]);
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
+  const hp = layout.hp;
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { paddingTop: topPad + 8 }]}>
+      <View style={[styles.header, { paddingTop: topPad + 8, paddingHorizontal: hp }]}>
         <LogoBrand variant="mini" />
-        <Text style={[styles.title, { color: colors.foreground }]}>Our Menu</Text>
+        <Text style={[styles.title, { color: colors.foreground, fontSize: layout.fs(26) }]}>
+          Our Menu
+        </Text>
         <View style={[styles.searchBar, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Feather name="search" size={16} color={colors.mutedForeground} />
           <TextInput
-            style={[styles.searchInput, { color: colors.foreground }]}
+            style={[styles.searchInput, { color: colors.foreground, fontSize: layout.fs(14) }]}
             placeholder="Search dishes..."
             placeholderTextColor={colors.mutedForeground}
             value={search}
@@ -67,7 +71,7 @@ export default function MenuScreen() {
           keyExtractor={(c) => c.id}
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 12, gap: 8 }}
+          contentContainerStyle={{ paddingHorizontal: 0, paddingVertical: 12, gap: 8 }}
           renderItem={({ item: cat }) => {
             const active = cat.id === activeCategory;
             return (
@@ -87,7 +91,11 @@ export default function MenuScreen() {
                 <Text
                   style={[
                     styles.catText,
-                    { color: active ? "#000" : colors.mutedForeground, fontWeight: active ? "700" : "500" },
+                    {
+                      color: active ? "#000" : colors.mutedForeground,
+                      fontWeight: active ? "700" : "500",
+                      fontSize: layout.fs(13),
+                    },
                   ]}
                 >
                   {cat.label}
@@ -101,34 +109,56 @@ export default function MenuScreen() {
       {filtered.length === 0 ? (
         <View style={styles.empty}>
           <Feather name="search" size={40} color={colors.mutedForeground} />
-          <Text style={[styles.emptyText, { color: colors.mutedForeground }]}>No items found</Text>
+          <Text style={[styles.emptyText, { color: colors.mutedForeground, fontSize: layout.fs(16) }]}>
+            No items found
+          </Text>
         </View>
       ) : (
         <FlatList
+          key={layout.menuCols}
           data={filtered}
           keyExtractor={(i) => i.id}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
+          numColumns={layout.menuCols}
+          columnWrapperStyle={[
+            styles.row,
+            layout.menuCols > 2 && { justifyContent: "flex-start" },
+          ]}
           contentContainerStyle={[
             styles.list,
-            { paddingBottom: itemCount > 0 ? 110 : (Platform.OS === "web" ? 100 : 80) },
+            {
+              paddingHorizontal: hp,
+              paddingBottom: itemCount > 0 ? 110 : Platform.OS === "web" ? 100 : 80,
+            },
           ]}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
-            <View style={styles.itemWrap}>
-              <MenuItemCard item={item} />
-            </View>
+            <Pressable
+              onPress={() => router.push(`/item/${item.id}`)}
+              style={{ marginBottom: layout.menuGap }}
+            >
+              <MenuItemCard item={item} cardWidth={layout.cardW} />
+            </Pressable>
           )}
         />
       )}
 
       {itemCount > 0 && (
-        <View style={[styles.cartBar, { backgroundColor: colors.gold }]}>
+        <View
+          style={[
+            styles.cartBar,
+            {
+              backgroundColor: colors.gold,
+              left: hp,
+              right: hp,
+              bottom: Platform.OS === "web" ? 34 : 16,
+            },
+          ]}
+        >
           <View style={styles.cartBarLeft}>
             <View style={[styles.cartCount, { backgroundColor: "rgba(0,0,0,0.2)" }]}>
               <Text style={styles.cartCountText}>{itemCount}</Text>
             </View>
-            <Text style={styles.cartBarText}>View Cart</Text>
+            <Text style={[styles.cartBarText, { fontSize: layout.fs(15) }]}>View Cart</Text>
           </View>
           <Pressable
             onPress={() => {
@@ -137,7 +167,7 @@ export default function MenuScreen() {
             }}
             style={styles.cartBarRight}
           >
-            <Text style={styles.cartBarTotal}>₹{total}</Text>
+            <Text style={[styles.cartBarTotal, { fontSize: layout.fs(16) }]}>₹{total}</Text>
             <Feather name="arrow-right" size={18} color="#000" />
           </Pressable>
         </View>
@@ -148,8 +178,8 @@ export default function MenuScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  header: { paddingHorizontal: 20, paddingBottom: 0 },
-  title: { fontSize: 28, fontWeight: "900", letterSpacing: -0.5, marginBottom: 12 },
+  header: { paddingBottom: 0 },
+  title: { fontWeight: "900", letterSpacing: -0.5, marginBottom: 12 },
   searchBar: {
     flexDirection: "row",
     alignItems: "center",
@@ -158,26 +188,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     gap: 8,
-    marginBottom: 0,
   },
-  searchInput: { flex: 1, fontSize: 14 },
-  catPill: {
-    borderRadius: 20,
-    borderWidth: 1,
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-  },
-  catText: { fontSize: 13 },
-  list: { paddingHorizontal: 16, paddingTop: 4 },
-  row: { gap: 12, marginBottom: 12 },
-  itemWrap: { flex: 1 },
+  searchInput: { flex: 1 },
+  catPill: { borderRadius: 20, borderWidth: 1, paddingHorizontal: 14, paddingVertical: 7 },
+  catText: {},
+  list: { paddingTop: 4 },
+  row: { gap: 12, marginBottom: 0 },
   empty: { flex: 1, justifyContent: "center", alignItems: "center", gap: 12 },
-  emptyText: { fontSize: 16 },
+  emptyText: {},
   cartBar: {
     position: "absolute",
-    bottom: Platform.OS === "web" ? 34 : 16,
-    left: 20,
-    right: 20,
     borderRadius: 16,
     flexDirection: "row",
     alignItems: "center",
@@ -188,7 +208,7 @@ const styles = StyleSheet.create({
   cartBarLeft: { flexDirection: "row", alignItems: "center", gap: 10 },
   cartCount: { width: 26, height: 26, borderRadius: 13, justifyContent: "center", alignItems: "center" },
   cartCountText: { fontSize: 12, fontWeight: "800", color: "#000" },
-  cartBarText: { fontSize: 15, fontWeight: "700", color: "#000" },
+  cartBarText: { fontWeight: "700", color: "#000" },
   cartBarRight: { flexDirection: "row", alignItems: "center", gap: 6 },
-  cartBarTotal: { fontSize: 16, fontWeight: "800", color: "#000" },
+  cartBarTotal: { fontWeight: "800", color: "#000" },
 });

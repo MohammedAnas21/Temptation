@@ -17,6 +17,7 @@ import { LogoBrand } from "@/components/LogoBrand";
 import { useUser } from "@/contexts/UserContext";
 import { Reservation } from "@/contexts/UserContext";
 import { useColors } from "@/hooks/useColors";
+import { useLayout } from "@/hooks/useLayout";
 
 const TIME_SLOTS = [
   "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM",
@@ -71,6 +72,7 @@ const STATUS_COLORS = {
 
 export default function ReserveScreen() {
   const colors = useColors();
+  const layout = useLayout();
   const insets = useSafeAreaInsets();
   const { addReservation, reservations, cancelReservation } = useUser();
 
@@ -86,6 +88,8 @@ export default function ReserveScreen() {
 
   const topPad = Platform.OS === "web" ? 67 : insets.top;
   const bottomPad = Platform.OS === "web" ? 34 : insets.bottom;
+  const hp = layout.hp;
+  const sc = layout.mapScale;
 
   const handleTablePress = (table: TableDef) => {
     if (table.status === "occupied" || table.status === "reserved") return;
@@ -143,7 +147,7 @@ export default function ReserveScreen() {
 
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
-      <View style={[styles.header, { paddingTop: topPad + 8 }]}>
+      <View style={[styles.header, { paddingTop: topPad + 8, paddingHorizontal: hp }]}>
         <LogoBrand variant="mini" />
         <View style={styles.headerRow}>
           <Text style={[styles.title, { color: colors.foreground }]}>Reserve Table</Text>
@@ -158,7 +162,7 @@ export default function ReserveScreen() {
       </View>
 
       {showHistory ? (
-        <ScrollView contentContainerStyle={{ padding: 20, gap: 12, paddingBottom: 80 }} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{ padding: hp, gap: 12, paddingBottom: 80 }} showsVerticalScrollIndicator={false}>
           {reservations.length === 0 ? (
             <View style={styles.emptyState}>
               <Feather name="calendar" size={40} color={colors.mutedForeground} />
@@ -198,7 +202,7 @@ export default function ReserveScreen() {
         </ScrollView>
       ) : (
         <ScrollView contentContainerStyle={{ paddingBottom: bottomPad + 100 }} showsVerticalScrollIndicator={false}>
-          <View style={{ paddingHorizontal: 20, marginBottom: 16 }}>
+          <View style={{ paddingHorizontal: hp, marginBottom: 16 }}>
             <View style={[styles.tabToggle, { backgroundColor: colors.card, borderColor: colors.border }]}>
               {(["visual", "picker"] as const).map((t) => (
                 <Pressable
@@ -220,7 +224,7 @@ export default function ReserveScreen() {
           </View>
 
           {activeTab === "visual" && (
-            <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+            <View style={{ paddingHorizontal: hp, marginBottom: 20 }}>
               <Text style={[styles.sectionLabel, { color: colors.foreground }]}>Select Your Table</Text>
               <Text style={[styles.sectionSub, { color: colors.mutedForeground }]}>Tap an available table to select it</Text>
 
@@ -229,22 +233,22 @@ export default function ReserveScreen() {
                   <Feather name="home" size={12} color={colors.mutedForeground} />
                   <Text style={[styles.floorLabelText, { color: colors.mutedForeground }]}>Indoor Seating Area</Text>
                 </View>
-                <View style={styles.floorMap}>
+                <View style={[styles.floorMap, { height: layout.mapH }]}>
                   {tables.map((table) => {
                     const color = STATUS_COLORS[table.status];
                     const isRound = table.shape === "round";
-                    const size = table.seats <= 2 ? 44 : table.seats <= 4 ? 54 : 64;
+                    const size = (table.seats <= 2 ? 44 : table.seats <= 4 ? 54 : 64) * sc;
                     return (
                       <Pressable
                         key={table.id}
                         onPress={() => handleTablePress(table)}
                         style={[
                           styles.tableBase,
-                          isRound ? { borderRadius: size / 2 } : { borderRadius: 8 },
+                          isRound ? { borderRadius: size / 2 } : { borderRadius: 6 },
                           {
                             position: "absolute",
-                            left: table.x,
-                            top: table.y,
+                            left: table.x * sc,
+                            top: table.y * sc,
                             width: isRound ? size : size * 1.6,
                             height: size,
                             backgroundColor: color + "22",
@@ -280,8 +284,8 @@ export default function ReserveScreen() {
           )}
 
           <View style={styles.section}>
-            <Text style={[styles.sectionLabel, { color: colors.foreground, paddingLeft: 20 }]}>Select Date</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 20, paddingRight: 8, gap: 8, paddingTop: 10 }}>
+            <Text style={[styles.sectionLabel, { color: colors.foreground, paddingLeft: hp }]}>Select Date</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: hp, paddingRight: 8, gap: 8, paddingTop: 10 }}>
               {UPCOMING_DAYS.map((day, idx) => {
                 const active = idx === selectedDay;
                 return (
@@ -298,7 +302,7 @@ export default function ReserveScreen() {
             </ScrollView>
           </View>
 
-          <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+          <View style={{ paddingHorizontal: hp, marginBottom: 20 }}>
             <Text style={[styles.sectionLabel, { color: colors.foreground }]}>Select Time</Text>
             <View style={styles.timeGrid}>
               {TIME_SLOTS.map((slot) => {
@@ -318,7 +322,7 @@ export default function ReserveScreen() {
             </View>
           </View>
 
-          <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+          <View style={{ paddingHorizontal: hp, marginBottom: 20 }}>
             <Text style={[styles.sectionLabel, { color: colors.foreground }]}>Number of Guests</Text>
             <View style={[styles.guestRow, { backgroundColor: colors.card, borderColor: colors.border }]}>
               <Pressable
@@ -340,7 +344,7 @@ export default function ReserveScreen() {
             </View>
           </View>
 
-          <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+          <View style={{ paddingHorizontal: hp, marginBottom: 20 }}>
             <Text style={[styles.sectionLabel, { color: colors.foreground }]}>Seating Preference</Text>
             <View style={styles.seatingRow}>
               {(["indoor", "outdoor"] as SeatingType[]).map((s) => {
@@ -361,7 +365,7 @@ export default function ReserveScreen() {
             </View>
           </View>
 
-          <View style={{ paddingHorizontal: 20, marginBottom: 20 }}>
+          <View style={{ paddingHorizontal: hp, marginBottom: 20 }}>
             <Text style={[styles.sectionLabel, { color: colors.foreground }]}>Special Requests</Text>
             <TextInput
               style={[styles.requestsInput, { backgroundColor: colors.card, borderColor: colors.border, color: colors.foreground }]}
@@ -374,7 +378,7 @@ export default function ReserveScreen() {
             />
           </View>
 
-          <View style={[styles.infoCard, { backgroundColor: colors.emerald, borderColor: colors.emeraldLight + "44" }]}>
+          <View style={[styles.infoCard, { backgroundColor: colors.emerald, borderColor: colors.emeraldLight + "44", marginHorizontal: hp }]}>
             <Feather name="info" size={15} color={colors.emeraldLight} />
             <Text style={[styles.infoText, { color: colors.mutedForeground }]}>
               Reservations held for 15 minutes. Please arrive on time. For large groups (10+), call{" "}
@@ -385,7 +389,7 @@ export default function ReserveScreen() {
       )}
 
       {!showHistory && (
-        <View style={[styles.confirmBar, { paddingBottom: bottomPad + 12, backgroundColor: colors.background }]}>
+        <View style={[styles.confirmBar, { paddingBottom: bottomPad + 12, backgroundColor: colors.background, paddingHorizontal: hp }]}>
           {selectedTable && (
             <View style={[styles.tableSelectedPill, { backgroundColor: colors.emerald, borderColor: colors.emeraldLight + "44" }]}>
               <Feather name="check-circle" size={13} color={colors.emeraldLight} />
@@ -406,7 +410,7 @@ export default function ReserveScreen() {
 
 const styles = StyleSheet.create({
   root: { flex: 1 },
-  header: { paddingHorizontal: 20, paddingBottom: 8 },
+  header: { paddingBottom: 8 },
   headerRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   title: { fontSize: 28, fontWeight: "900", letterSpacing: -0.5 },
   historyBtn: { fontSize: 14, fontWeight: "600" },
@@ -418,7 +422,7 @@ const styles = StyleSheet.create({
   floorContainer: { borderRadius: 16, borderWidth: 1, padding: 14, overflow: "hidden" },
   floorLabel: { flexDirection: "row", alignItems: "center", gap: 6, borderBottomWidth: 1, paddingBottom: 10, marginBottom: 12 },
   floorLabelText: { fontSize: 12, fontWeight: "600" },
-  floorMap: { height: 280, position: "relative", marginBottom: 12 },
+  floorMap: { position: "relative", marginBottom: 12 },
   tableBase: { justifyContent: "center", alignItems: "center" },
   tableId: { fontSize: 10, fontWeight: "800" },
   tableSeats: { fontSize: 9 },
@@ -442,9 +446,9 @@ const styles = StyleSheet.create({
   seatingBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, borderRadius: 14, borderWidth: 1.5, paddingVertical: 16 },
   seatingText: { fontSize: 15, fontWeight: "700" },
   requestsInput: { borderRadius: 12, borderWidth: 1, padding: 14, fontSize: 14, minHeight: 90, textAlignVertical: "top", marginTop: 10 },
-  infoCard: { flexDirection: "row", alignItems: "flex-start", gap: 10, marginHorizontal: 20, borderRadius: 12, borderWidth: 1, padding: 14, marginBottom: 20 },
+  infoCard: { flexDirection: "row", alignItems: "flex-start", gap: 10, borderRadius: 12, borderWidth: 1, padding: 14, marginBottom: 20 },
   infoText: { flex: 1, fontSize: 12, lineHeight: 18 },
-  confirmBar: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 20, paddingTop: 12, gap: 8 },
+  confirmBar: { position: "absolute", bottom: 0, left: 0, right: 0, paddingTop: 12, gap: 8 },
   tableSelectedPill: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 10, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 7 },
   tableSelectedText: { fontSize: 12, fontWeight: "700" },
   confirmBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, borderRadius: 16, paddingVertical: 16 },
