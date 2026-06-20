@@ -36,3 +36,45 @@ id = "ADjanvAXafZ1qBIeT_KO5"
 uri = "file://artifacts/mobile/assets/images/splash_bg.png"
 type = "image"
 title = "generated_image"
+
+[[generated]]
+id = "UBfW15fXz6rNOy0Fag4MP"
+uri = "file://artifacts/mobile/assets/images/pizza.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "N2bOgR12A3Y3CPSTphXuo"
+uri = "file://artifacts/mobile/assets/images/coffee.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Shf606Wb40YGGm5DhipkP"
+uri = "file://artifacts/mobile/assets/images/wings.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "AOyDIw1hQh5Vv0IzSl8hl"
+uri = "file://artifacts/mobile/assets/images/wrap.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "UxCp4C0rMMQlcgETWL9fl"
+uri = "file://artifacts/mobile/assets/images/ambience.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "SKhhIwwVpyDCNSUNZJCcF"
+uri = "file://artifacts/mobile/assets/images/event_birthday.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "wID6bXGRaud6tNfbkyIrG"
+uri = "file://artifacts/mobile/assets/images/momos.png"
+type = "image"
+title = "generated_image"

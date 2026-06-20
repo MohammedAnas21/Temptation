@@ -1,0 +1,151 @@
+Act as a world-class Product Designer, Mobile App Designer, UX Designer, and Flutter Developer.
+
+Create a premium, high-end mobile app demo for "Temptations Cafe" located in Kalaburagi.
+
+This is a client presentation prototype/demo, not a production application.
+
+Goal:
+Create a beautiful, modern, luxury cafe mobile application that can impress investors, customers, and business owners.
+
+Brand Theme:
+- Luxury Cafe
+- Dark Emerald Green
+- Premium Gold
+- Ivory Cream
+- Elegant Typography
+- Modern UI
+- Apple-level design quality
+
+Generate a complete Flutter mobile application prototype with realistic dummy data.
+
+Screens Required:
+
+1. Splash Screen
+- Animated Temptations Cafe logo
+- Premium loading animation
+
+2. Onboarding Screens
+- Welcome to Temptations Cafe
+- Reserve Tables
+- Order Food
+- Earn Rewards
+
+3. Login & Signup
+- Mobile OTP Login
+- Google Login
+- Apple Login UI
+
+4. Home Screen
+- Hero Banner
+- Featured Dishes
+- Special Offers
+- Popular Items
+- Upcoming Events
+- Quick Book Table Button
+
+5. Table Reservation
+- Visual restaurant floor layout
+- Available tables
+- Occupied tables
+- Reserved tables
+- Select date and time
+- Guest count
+- Confirm reservation
+
+6. Menu Screen
+- Categories
+- Search
+- Food cards
+- Images
+- Pricing
+- Ratings
+- Add to cart
+
+7. Dish Details
+- Large food image
+- Ingredients
+- Description
+- Reviews
+- Add-ons
+- Add to cart
+
+8. Cart
+- Modify quantities
+- Promo codes
+- Order summary
+- Checkout
+
+9. Loyalty & Rewards
+- Points balance
+- Membership status
+- Rewards catalog
+- Referral program
+
+10. Offers & Promotions
+- Active offers
+- Seasonal promotions
+- Coupons
+
+11. Events
+- Birthday Packages
+- Corporate Events
+- Live Music Nights
+- Reservation CTA
+
+12. Customer Profile
+- Booking history
+- Orders history
+- Loyalty points
+- Saved preferences
+
+13. Notifications
+- Offers
+- Reservation reminders
+- Event updates
+
+14. Reviews
+- Customer ratings
+- Food reviews
+- Image reviews
+
+15. Contact & Location
+- Google Maps integration UI
+- WhatsApp button
+- Call button
+- Social media links
+
+Admin Demo Screens:
+
+1. Dashboard
+- Total Customers
+- Today's Reservations
+- Revenue Overview
+- Popular Items
+
+2. Reservation Management
+- Upcoming Reservations
+- Table Status
+
+3. Customer CRM
+- Customer Profiles
+- Loyalty Data
+
+4. Analytics
+- Revenue Charts
+- Reservation Trends
+- Popular Menu Items
+
+Requirements:
+- Use beautiful animations
+- Glassmorphism where appropriate
+- Premium luxury cafe aesthetic
+- Responsive design
+- Modern cards
+- Realistic images from placeholders
+- Clean architecture
+- Riverpod state management
+- Generate complete Flutter project structure
+
+Focus on visual impact and client presentation quality.
+
+Make it look like a ₹10 lakh enterprise cafe platform even though it is only a demo prototype.
