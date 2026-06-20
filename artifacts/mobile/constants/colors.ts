@@ -1,65 +1,79 @@
+/**
+ * Temptations Cafe brand palette
+ * Extracted from official logo:
+ *  - Deep Forest Green background: #0D3321
+ *  - Antique Gold accent: #C8A028
+ *  - Ivory / Cream text: #F5F0E8
+ */
 const colors = {
   light: {
-    text: "#0a0a0a",
-    tint: "#C8973A",
-    background: "#ffffff",
-    foreground: "#0a0a0a",
-    card: "#f9f9f9",
-    cardForeground: "#0a0a0a",
-    primary: "#C8973A",
-    primaryForeground: "#ffffff",
-    secondary: "#f0f0f0",
-    secondaryForeground: "#1a1a1a",
-    muted: "#f0f0f0",
-    mutedForeground: "#737373",
+    text: "#0D3321",
+    tint: "#C8A028",
+    background: "#F5F0E8",
+    foreground: "#0D3321",
+    card: "#EDEAE2",
+    cardForeground: "#0D3321",
+    primary: "#C8A028",
+    primaryForeground: "#0D3321",
+    secondary: "#D4E8DC",
+    secondaryForeground: "#0D3321",
+    muted: "#E0DDD6",
+    mutedForeground: "#5A7A67",
     accent: "#D4AF37",
-    accentForeground: "#1a1a1a",
-    destructive: "#ef4444",
+    accentForeground: "#0D3321",
+    destructive: "#C62828",
     destructiveForeground: "#ffffff",
-    border: "#e5e5e5",
-    input: "#e5e5e5",
-    gold: "#C8973A",
+    border: "#C8C0A8",
+    input: "#C8C0A8",
+    gold: "#C8A028",
     goldLight: "#D4AF37",
-    goldDim: "rgba(200,151,58,0.15)",
-    emerald: "#2D6A4F",
-    emeraldLight: "#40916C",
-    emeraldDim: "rgba(45,106,79,0.15)",
+    goldDim: "rgba(200,160,40,0.15)",
+    emerald: "#1A5C38",
+    emeraldLight: "#2D8A56",
+    emeraldDim: "rgba(45,138,86,0.15)",
     ivory: "#F5F0E8",
-    surface: "rgba(0,0,0,0.04)",
-    surfaceHover: "rgba(0,0,0,0.07)",
-    secondary2: "#E8F4F0",
-    cardElevated: "#f3f3f3",
+    surface: "rgba(13,51,33,0.05)",
+    surfaceHover: "rgba(13,51,33,0.08)",
+    secondary2: "#D4E8DC",
+    cardElevated: "#E5E0D8",
   },
   dark: {
-    text: "#F0EDE8",
-    tint: "#C8973A",
-    background: "#070F0C",
-    foreground: "#F0EDE8",
-    card: "#0E1A15",
-    cardForeground: "#F0EDE8",
-    primary: "#C8973A",
-    primaryForeground: "#0A0A0A",
-    secondary: "#0A1F16",
-    secondaryForeground: "#F0EDE8",
-    muted: "#111D17",
-    mutedForeground: "#7A9E8E",
-    accent: "#D4AF37",
-    accentForeground: "#0A0A0A",
-    destructive: "#ef4444",
-    destructiveForeground: "#ffffff",
-    border: "#1A2E23",
-    input: "#1A2E23",
-    cardElevated: "#142019",
-    gold: "#C8973A",
+    text: "#F5F0E8",
+    tint: "#C8A028",
+    /* ── Core surfaces (matched to logo) ── */
+    background: "#0D3321",   /* deep forest green — logo bg */
+    foreground: "#F5F0E8",   /* ivory cream */
+    card: "#0F3D27",         /* slightly lighter forest green */
+    cardForeground: "#F5F0E8",
+    cardElevated: "#133F2A", /* elevated cards */
+    /* ── Brand primaries ── */
+    primary: "#C8A028",      /* antique gold — logo gold */
+    primaryForeground: "#0D3321",
+    secondary: "#0A2C1C",    /* deeper forest green */
+    secondaryForeground: "#F5F0E8",
+    /* ── Neutrals ── */
+    muted: "#0A2C1C",
+    mutedForeground: "#7AAD8A", /* muted sage green */
+    /* ── Accents ── */
+    accent: "#D4AF37",       /* bright gold highlight */
+    accentForeground: "#0D3321",
+    /* ── Gold palette ── */
+    gold: "#C8A028",
     goldLight: "#D4AF37",
-    goldDim: "rgba(200,151,58,0.12)",
-    emerald: "#1A3D2B",
-    emeraldLight: "#2D6A4F",
-    emeraldDim: "rgba(45,106,79,0.18)",
+    goldDim: "rgba(200,160,40,0.14)",
+    /* ── Emerald palette ── */
+    emerald: "#1A4D30",
+    emeraldLight: "#2D7A50",
+    emeraldDim: "rgba(45,122,80,0.2)",
+    /* ── UI ── */
     ivory: "#F5F0E8",
-    surface: "rgba(255,255,255,0.04)",
-    surfaceHover: "rgba(255,255,255,0.07)",
-    secondary2: "#0A1F16",
+    border: "#1C4D30",
+    input: "#1C4D30",
+    destructive: "#C62828",
+    destructiveForeground: "#ffffff",
+    surface: "rgba(245,240,232,0.05)",
+    surfaceHover: "rgba(245,240,232,0.08)",
+    secondary2: "#0A2C1C",
   },
   radius: 14,
 };

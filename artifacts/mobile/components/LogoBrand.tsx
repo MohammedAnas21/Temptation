@@ -1,0 +1,107 @@
+import React from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { useColors } from "@/hooks/useColors";
+
+type Variant = "full" | "header" | "mini";
+
+export function LogoBrand({ variant = "header" }: { variant?: Variant }) {
+  const colors = useColors();
+
+  if (variant === "full") {
+    return (
+      <View style={styles.fullWrap}>
+        <Image
+          source={require("@/assets/images/logo.jpeg")}
+          style={styles.fullImage}
+          resizeMode="contain"
+        />
+      </View>
+    );
+  }
+
+  if (variant === "mini") {
+    return (
+      <View style={styles.miniWrap}>
+        <Image
+          source={require("@/assets/images/logo.jpeg")}
+          style={styles.miniImage}
+          resizeMode="contain"
+        />
+        <View>
+          <Text style={[styles.miniName, { color: colors.gold }]}>TEMPTATIONS</Text>
+          <Text style={[styles.miniTagline, { color: colors.mutedForeground }]}>
+            Taste Of Happiness
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.headerWrap}>
+      <Image
+        source={require("@/assets/images/logo.jpeg")}
+        style={styles.headerIcon}
+        resizeMode="contain"
+      />
+      <View>
+        <Text style={[styles.headerName, { color: colors.gold }]}>TEMPTATIONS</Text>
+        <Text style={[styles.headerTagline, { color: colors.mutedForeground }]}>
+          Taste Of Happiness
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  fullWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  fullImage: {
+    width: 260,
+    height: 260,
+    borderRadius: 20,
+  },
+  miniWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  miniImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+  },
+  miniName: {
+    fontSize: 14,
+    fontWeight: "900",
+    letterSpacing: 2,
+  },
+  miniTagline: {
+    fontSize: 9,
+    fontStyle: "italic",
+    letterSpacing: 0.3,
+  },
+  headerWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  headerIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 10,
+  },
+  headerName: {
+    fontSize: 16,
+    fontWeight: "900",
+    letterSpacing: 2.5,
+  },
+  headerTagline: {
+    fontSize: 10,
+    fontStyle: "italic",
+    letterSpacing: 0.3,
+  },
+});

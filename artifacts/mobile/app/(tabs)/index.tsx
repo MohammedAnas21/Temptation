@@ -19,6 +19,7 @@ import { OfferCard } from "@/components/OfferCard";
 import { ReviewCard } from "@/components/ReviewCard";
 import { SectionHeader } from "@/components/SectionHeader";
 import { MenuItemCard } from "@/components/MenuItemCard";
+import { LogoBrand } from "@/components/LogoBrand";
 import { useCart } from "@/contexts/CartContext";
 import { menuItems, offers, reviews, events } from "@/constants/menu";
 import { useColors } from "@/hooks/useColors";
@@ -46,13 +47,10 @@ export default function HomeScreen() {
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <Animated.View style={[styles.header, { paddingTop: topPad + 10, backgroundColor: headerBg }]}>
         <View style={styles.logoRow}>
-          <View style={styles.logoTextWrap}>
-            <Text style={[styles.logoT, { color: colors.gold }]}>Temptations</Text>
-            <Text style={[styles.logoC, { color: colors.foreground }]}>CAFE</Text>
-          </View>
+          <LogoBrand variant="header" />
           <View style={styles.locRow}>
-            <Feather name="map-pin" size={13} color={colors.emeraldLight} />
-            <Text style={[styles.locText, { color: colors.mutedForeground }]}>Kalaburagi, KA</Text>
+            <Feather name="map-pin" size={11} color={colors.emeraldLight} />
+            <Text style={[styles.locText, { color: colors.mutedForeground }]}>Kalaburagi</Text>
           </View>
         </View>
         <Pressable

@@ -91,9 +91,12 @@ export default function LoginScreen() {
         </Pressable>
       </View>
 
-      <View style={[styles.logoWrap, { paddingTop: topPad + 60 }]}>
-        <Text style={[styles.logoT, { color: colors.gold }]}>Temptations</Text>
-        <Text style={[styles.logoC, { color: colors.ivory }]}>CAFE</Text>
+      <View style={[styles.logoWrap, { paddingTop: topPad + 48 }]}>
+        <Image
+          source={require("@/assets/images/logo.jpeg")}
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
         <Text style={[styles.logoSub, { color: colors.mutedForeground }]}>Kalaburagi's Finest</Text>
       </View>
 
@@ -235,9 +238,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingBottom: 32,
   },
-  logoT: { fontSize: 28, fontWeight: "900" },
-  logoC: { fontSize: 16, fontWeight: "700", letterSpacing: 4 },
-  logoSub: { fontSize: 13, marginTop: 4 },
+  logoImage: { width: 200, height: 200, borderRadius: 20 },
+  logoSub: { fontSize: 13, marginTop: 12, fontStyle: "italic" },
   card: {
     marginHorizontal: 20,
     borderRadius: 20,

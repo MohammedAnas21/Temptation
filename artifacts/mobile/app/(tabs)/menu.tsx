@@ -15,6 +15,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { MenuItemCard } from "@/components/MenuItemCard";
+import { LogoBrand } from "@/components/LogoBrand";
 import { useCart } from "@/contexts/CartContext";
 import { categories, menuItems } from "@/constants/menu";
 import { useColors } from "@/hooks/useColors";
@@ -43,6 +44,7 @@ export default function MenuScreen() {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { paddingTop: topPad + 8 }]}>
+        <LogoBrand variant="mini" />
         <Text style={[styles.title, { color: colors.foreground }]}>Our Menu</Text>
         <View style={[styles.searchBar, { backgroundColor: colors.card, borderColor: colors.border }]}>
           <Feather name="search" size={16} color={colors.mutedForeground} />

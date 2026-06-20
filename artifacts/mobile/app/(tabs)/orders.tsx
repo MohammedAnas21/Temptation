@@ -15,6 +15,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { LogoBrand } from "@/components/LogoBrand";
 import { useCart } from "@/contexts/CartContext";
 import { useUser } from "@/contexts/UserContext";
 import { Order } from "@/contexts/UserContext";
@@ -82,6 +83,7 @@ export default function OrdersScreen() {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { paddingTop: topPad + 8 }]}>
+        <LogoBrand variant="mini" />
         <Text style={[styles.title, { color: colors.foreground }]}>
           {activeTab === "cart" ? "Your Cart" : "My Orders"}
         </Text>

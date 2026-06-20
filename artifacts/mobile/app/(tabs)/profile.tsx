@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { LogoBrand } from "@/components/LogoBrand";
 import { useUser } from "@/contexts/UserContext";
 import { menuItems } from "@/constants/menu";
 import { MenuItemCard } from "@/components/MenuItemCard";
@@ -58,6 +59,7 @@ export default function ProfileScreen() {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { paddingTop: topPad + 8 }]}>
+        <LogoBrand variant="mini" />
         <View style={styles.headerRow}>
           <Text style={[styles.title, { color: colors.foreground }]}>
             {activeSection === "main" ? "Profile" : activeSection === "favorites" ? "Favourites" : "Order History"}

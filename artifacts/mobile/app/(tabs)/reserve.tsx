@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { LogoBrand } from "@/components/LogoBrand";
 import { useUser } from "@/contexts/UserContext";
 import { Reservation } from "@/contexts/UserContext";
 import { useColors } from "@/hooks/useColors";
@@ -143,6 +144,7 @@ export default function ReserveScreen() {
   return (
     <View style={[styles.root, { backgroundColor: colors.background }]}>
       <View style={[styles.header, { paddingTop: topPad + 8 }]}>
+        <LogoBrand variant="mini" />
         <View style={styles.headerRow}>
           <Text style={[styles.title, { color: colors.foreground }]}>Reserve Table</Text>
           {reservations.length > 0 && (
