@@ -11,15 +11,24 @@
     "splash": {
       "image": "./assets/images/splash_bg.png",
       "resizeMode": "contain",
-      "backgroundColor": "#031E0F"
+      "backgroundColor": "#052A16"
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.temptations.cafe"
+      "bundleIdentifier": "com.temptations.cafe",
+      "splash": {
+        "image": "./assets/images/splash_bg.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#052A16"
+      }
     },
     "android": {
       "package": "com.temptations.cafe",
-      "backgroundColor": "#031E0F"
+      "backgroundColor": "#052A16",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#052A16"
+      }
     },
     "web": {
       "favicon": "./assets/images/icon.png"

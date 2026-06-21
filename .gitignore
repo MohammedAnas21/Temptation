@@ -54,3 +54,8 @@ artifacts/mobile/downloads/
 landing/index.html
 landing/images/
 landing/temptations-cafe.apk
+
+# python
+__pycache__/
+*.pyc
+*.pyo

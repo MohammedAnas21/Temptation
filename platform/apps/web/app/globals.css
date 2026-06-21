@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green-950: #021A0D;
+  --green-900: #052A16;
+  --green-800: #0A4424;
+  --green-700: #135A30;
+  --gold-300:  #F0CC8D;
+  --gold-400:  #DDB56C;
+  --gold-500:  #C79A4E;
+  --ivory-50:  #FAF6EC;
+  --ivory-100: #F4F1E5;
+}
+
+@layer base {
+  h1, h2, h3 { font-family: var(--font-display), Georgia, serif; }
+  body        { font-family: var(--font-body), system-ui, sans-serif; }
+}
+
+@layer utilities {
+  .text-gold    { color: var(--gold-500); }
+  .bg-green     { background-color: var(--green-900); }
+  .border-gold  { border-color: var(--gold-500); }
+}

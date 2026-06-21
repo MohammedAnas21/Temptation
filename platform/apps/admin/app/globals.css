@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sidebar-bg: #052A16;
+  --sidebar-border: rgba(240,204,141,0.12);
+  --gold: #F0CC8D;
+  --gold-dim: rgba(240,204,141,0.15);
+}

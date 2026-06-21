@@ -12,7 +12,7 @@ export function LogoBrand({ variant = "header" }: { variant?: Variant }) {
     return (
       <View style={styles.fullWrap}>
         <Image
-          source={require("@/assets/images/logo.jpeg")}
+          source={require("@/assets/images/logo.png")}
           style={styles.fullImage}
           resizeMode="contain"
         />
@@ -24,7 +24,7 @@ export function LogoBrand({ variant = "header" }: { variant?: Variant }) {
     return (
       <View style={styles.miniWrap}>
         <Image
-          source={require("@/assets/images/logo.jpeg")}
+          source={require("@/assets/images/logo.png")}
           style={styles.miniImage}
           resizeMode="contain"
         />
@@ -41,7 +41,7 @@ export function LogoBrand({ variant = "header" }: { variant?: Variant }) {
   return (
     <View style={styles.headerWrap}>
       <Image
-        source={require("@/assets/images/logo.jpeg")}
+        source={require("@/assets/images/logo.png")}
         style={styles.headerIcon}
         resizeMode="contain"
       />
