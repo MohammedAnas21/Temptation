@@ -37,13 +37,13 @@ dependencies:
   flutter_svg: ^2.0.10+1
   shimmer: ^3.0.0
   lottie: ^3.1.2
-  qr_code_scanner: ^1.0.1
+  flutter_local_notifications: ^18.0.1
 
   # Sign-in providers
   sign_in_with_apple: ^6.1.3
 
   # Sharing & links
-  share_plus: ^10.1.2
+  share_plus: ^7.2.2
   url_launcher: ^6.3.1
 
   # Maps
@@ -59,9 +59,8 @@ dependencies:
   equatable: ^2.0.5
   dartz: ^0.10.1
 
-  # Payments
-  phonepe_payment_sdk: ^2.0.2
-  upi_india: ^3.3.2
+  # Payments — handled server-side via PhonePe REST API (see PaymentService),
+  # opened through the system browser/WebView rather than a native SDK.
 
 dev_dependencies:
   flutter_test:
@@ -80,21 +79,21 @@ flutter:
   fonts:
     - family: Fraunces
       fonts:
-        - asset: assets/fonts/Fraunces-Regular.ttf
-        - asset: assets/fonts/Fraunces-Medium.ttf
+        - asset: assets/fonts/Fraunces-Variable.ttf
+        - asset: assets/fonts/Fraunces-Variable.ttf
           weight: 500
-        - asset: assets/fonts/Fraunces-SemiBold.ttf
+        - asset: assets/fonts/Fraunces-Variable.ttf
           weight: 600
-        - asset: assets/fonts/Fraunces-Bold.ttf
+        - asset: assets/fonts/Fraunces-Variable.ttf
           weight: 700
-        - asset: assets/fonts/Fraunces-Black.ttf
+        - asset: assets/fonts/Fraunces-Variable.ttf
           weight: 900
     - family: WorkSans
       fonts:
-        - asset: assets/fonts/WorkSans-Regular.ttf
-        - asset: assets/fonts/WorkSans-Medium.ttf
+        - asset: assets/fonts/WorkSans-Variable.ttf
+        - asset: assets/fonts/WorkSans-Variable.ttf
           weight: 500
-        - asset: assets/fonts/WorkSans-SemiBold.ttf
+        - asset: assets/fonts/WorkSans-Variable.ttf
           weight: 600
-        - asset: assets/fonts/WorkSans-Bold.ttf
+        - asset: assets/fonts/WorkSans-Variable.ttf
           weight: 700

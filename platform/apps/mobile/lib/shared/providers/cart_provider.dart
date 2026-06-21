@@ -26,7 +26,9 @@ class CartNotifier extends StateNotifier<List<CartItem>> {
   void addItem(CartItem item) {
     final idx = state.indexWhere((i) => i.menuItemId == item.menuItemId);
     if (idx >= 0) {
-      state = [...state]..[idx].quantity++;
+      final updated = [...state];
+      updated[idx].quantity++;
+      state = updated;
     } else {
       state = [...state, item];
     }
