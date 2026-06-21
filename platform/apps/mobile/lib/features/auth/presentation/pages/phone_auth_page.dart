@@ -30,8 +30,11 @@ class _PhoneAuthPageState extends ConsumerState<PhoneAuthPage> {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       verificationCompleted: (PhoneAuthCredential cred) async {
-        await FirebaseAuth.instance.signInWithCredential(cred);
-        if (mounted) context.go('/home');
+        final result = await FirebaseAuth.instance.signInWithCredential(cred);
+        if (mounted) {
+          final isNewUser = result.additionalUserInfo?.isNewUser ?? false;
+          context.go(isNewUser ? '/auth/profile-setup' : '/home');
+        }
       },
       verificationFailed: (FirebaseAuthException e) {
         setState(() { _loading = false; _error = e.message; });

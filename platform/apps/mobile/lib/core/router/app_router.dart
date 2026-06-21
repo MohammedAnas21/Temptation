@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../features/auth/presentation/pages/auth_landing_page.dart';
+import '../../features/auth/presentation/pages/profile_setup_page.dart';
 import '../../features/auth/presentation/pages/phone_auth_page.dart';
 import '../../features/auth/presentation/pages/otp_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
@@ -12,23 +17,61 @@ import '../../features/reservations/presentation/pages/reservation_flow_page.dar
 import '../../features/orders/presentation/pages/orders_page.dart';
 import '../../features/loyalty/presentation/pages/loyalty_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/profile/presentation/pages/favorites_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/notifications/presentation/pages/notifications_page.dart';
 import '../../features/payments/payment_page.dart';
 import '../../features/payments/payment_callback_page.dart';
 
+/// True once the splash screen's minimum dwell time + bootstrap checks have run.
+final splashDoneProvider = StateProvider<bool>((ref) => false);
+
+/// Cached "has the user completed onboarding" flag, loaded once at startup.
+final hasSeenOnboardingProvider = FutureProvider<bool>((ref) async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getBool('has_seen_onboarding') ?? false;
+});
+
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/splash',
+    refreshListenable: GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
     redirect: (context, state) {
+      final loc = state.matchedLocation;
+      final splashDone = ref.read(splashDoneProvider);
+      final onboardingAsync = ref.read(hasSeenOnboardingProvider);
+
+      // Always allow the splash screen itself and its "done" marker route.
+      if (loc == '/splash') return null;
+      if (loc == '/splash/done') {
+        ref.read(splashDoneProvider.notifier).state = true;
+        final seenOnboarding = onboardingAsync.value ?? false;
+        if (!seenOnboarding) return '/onboarding';
+        final user = FirebaseAuth.instance.currentUser;
+        return user != null ? '/home' : '/auth/landing';
+      }
+
+      // Before splash has finished, hold everything at splash.
+      if (!splashDone) return '/splash';
+
+      final seenOnboarding = onboardingAsync.value ?? true; // assume seen while loading to avoid flicker
+      if (!seenOnboarding && loc != '/onboarding') return '/onboarding';
+
       final user = FirebaseAuth.instance.currentUser;
       final isAuth = user != null;
-      final onAuthPage = state.matchedLocation.startsWith('/auth');
-      if (!isAuth && !onAuthPage) return '/auth/phone';
-      if (isAuth && onAuthPage) return '/home';
+      final onAuthFlow = loc.startsWith('/auth') || loc == '/onboarding';
+      if (!isAuth && !onAuthFlow) return '/auth/landing';
+      if (isAuth && (loc.startsWith('/auth') || loc == '/onboarding')) return '/home';
       return null;
     },
     routes: [
+      GoRoute(path: '/splash', builder: (_, __) => const SplashPage()),
+      GoRoute(path: '/splash/done', builder: (_, __) => const SplashPage()),
+      GoRoute(path: '/onboarding', builder: (_, __) => const OnboardingPage()),
+
       // Auth
+      GoRoute(path: '/auth/landing', builder: (_, __) => const AuthLandingPage()),
+      GoRoute(path: '/auth/profile-setup', builder: (_, __) => const ProfileSetupPage()),
       GoRoute(path: '/auth/phone', builder: (_, __) => const PhoneAuthPage()),
       GoRoute(path: '/auth/otp',   builder: (_, s) => OtpPage(verificationId: s.uri.queryParameters['vid'] ?? '')),
 
@@ -45,9 +88,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
 
-      // Modal routes
+      // Modal / detail routes
       GoRoute(path: '/menu/:id',  builder: (_, s) => ItemDetailPage(itemId: s.pathParameters['id']!)),
       GoRoute(path: '/cart',      builder: (_, __) => const CartPage()),
+      GoRoute(path: '/settings',  builder: (_, __) => const SettingsPage()),
+      GoRoute(path: '/favorites', builder: (_, __) => const FavoritesPage()),
 
       // Notifications
       GoRoute(path: '/notifications', builder: (_, __) => const NotificationsPage()),
@@ -71,6 +116,16 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+/// Bridges a Stream (Firebase auth state) into a Listenable so GoRouter
+/// re-evaluates its redirect whenever auth state changes.
+class GoRouterRefreshStream extends ChangeNotifier {
+  late final Stream<User?> _stream;
+  GoRouterRefreshStream(Stream<User?> stream) {
+    _stream = stream;
+    _stream.listen((_) => notifyListeners());
+  }
+}
 
 class MainShell extends StatelessWidget {
   final Widget child;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/providers/auth_provider.dart';
@@ -52,6 +54,14 @@ class LoyaltyPage extends ConsumerWidget {
                 loading: () => const SizedBox.shrink(),
                 error: (_, __) => const SizedBox.shrink(),
                 data: (l) => _TierBenefits(tier: l['tier'] ?? 'bronze', tierInfo: l['tier_info'] ?? {}),
+              ),
+              const SizedBox(height: 24),
+
+              // Rewards catalog
+              loyaltyAsync.when(
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
+                data: (l) => _RewardsCatalog(pointsBalance: l['points_balance'] as int? ?? 0),
               ),
               const SizedBox(height: 24),
 
@@ -188,6 +198,73 @@ class _TierBenefits extends StatelessWidget {
   }
 }
 
+class _RewardsCatalog extends StatelessWidget {
+  final int pointsBalance;
+  const _RewardsCatalog({required this.pointsBalance});
+
+  static const _rewards = [
+    {'title': '₹10 Off Your Order', 'cost': 100, 'icon': Icons.percent_rounded},
+    {'title': 'Free Cold Coffee', 'cost': 250, 'icon': Icons.local_cafe_rounded},
+    {'title': 'Free Dessert', 'cost': 400, 'icon': Icons.cake_rounded},
+    {'title': 'Free Meal (up to ₹300)', 'cost': 500, 'icon': Icons.restaurant_rounded},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Rewards Catalog', style: TextStyle(color: AppColors.ivory50, fontFamily: 'Fraunces', fontWeight: FontWeight.w700, fontSize: 18)),
+        const SizedBox(height: 4),
+        const Text('Redeem points at checkout when placing an order.', style: TextStyle(color: AppColors.gold500, fontSize: 12)),
+        const SizedBox(height: 12),
+        ..._rewards.map((r) {
+          final cost = r['cost'] as int;
+          final unlocked = pointsBalance >= cost;
+          return Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: AppColors.green800,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: unlocked ? AppColors.gold500.withOpacity(0.4) : AppColors.green700),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 38, height: 38,
+                  decoration: BoxDecoration(color: AppColors.green900, borderRadius: BorderRadius.circular(10)),
+                  child: Icon(r['icon'] as IconData, color: unlocked ? AppColors.gold400 : AppColors.gold600, size: 18),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(r['title'] as String,
+                      style: TextStyle(color: unlocked ? AppColors.ivory50 : AppColors.ivory100.withOpacity(0.6), fontSize: 13, fontWeight: FontWeight.w600)),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: unlocked ? AppColors.gold500.withOpacity(0.15) : AppColors.green700,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text('$cost pts', style: TextStyle(color: unlocked ? AppColors.gold400 : AppColors.gold600, fontSize: 11, fontWeight: FontWeight.w700)),
+                ),
+              ],
+            ),
+          );
+        }),
+        Align(
+          alignment: Alignment.centerRight,
+          child: TextButton(
+            onPressed: () => context.go('/menu'),
+            child: const Text('Order now to redeem →', style: TextStyle(color: AppColors.gold400, fontSize: 12)),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _ReferralCard extends ConsumerWidget {
   const _ReferralCard();
 
@@ -235,8 +312,25 @@ class _ReferralCard extends ConsumerWidget {
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  decoration: BoxDecoration(color: AppColors.green900, borderRadius: BorderRadius.circular(10)),
+                  child: const Icon(Icons.copy_rounded, color: AppColors.gold400, size: 18),
+                ),
+              ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () {
+                  profileAsync.whenData((profile) {
+                    final code = profile['referral_code'] as String? ?? 'TEMPT000';
+                    Share.share(
+                      'Join me on Temptations Cafe — Taste Of Happiness! 🍰\n'
+                      'Use my referral code $code when you sign up and we both earn reward points.',
+                    );
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                   decoration: BoxDecoration(color: AppColors.gold500, borderRadius: BorderRadius.circular(10)),
-                  child: const Text('Copy', style: TextStyle(color: AppColors.green900, fontWeight: FontWeight.w700)),
+                  child: const Icon(Icons.share_rounded, color: AppColors.green900, size: 18),
                 ),
               ),
             ],

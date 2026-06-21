@@ -16,7 +16,26 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   bool _editing = false;
   final _nameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
+  DateTime? _birthday;
+  DateTime? _anniversary;
   bool _saving = false;
+
+  String _fmt(DateTime? d) => d == null ? '' : '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  Future<void> _pickDate(bool isBirthday) async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: (isBirthday ? _birthday : _anniversary) ?? DateTime(now.year - 20),
+      firstDate: DateTime(now.year - 100),
+      lastDate: now,
+      builder: (context, child) => Theme(
+        data: Theme.of(context).copyWith(colorScheme: const ColorScheme.dark(primary: AppColors.gold400, surface: AppColors.green800)),
+        child: child!,
+      ),
+    );
+    if (picked != null) setState(() => isBirthday ? _birthday = picked : _anniversary = picked);
+  }
 
   Future<void> _save() async {
     setState(() => _saving = true);
@@ -25,6 +44,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       await dio.patch('/auth/me', data: {
         'name': _nameCtrl.text.trim(),
         'email': _emailCtrl.text.trim(),
+        if (_birthday != null) 'birthday': _fmt(_birthday),
+        if (_anniversary != null) 'anniversary': _fmt(_anniversary),
       });
       ref.invalidate(userProfileProvider);
       setState(() => _editing = false);
@@ -56,6 +77,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               profileAsync.whenData((p) {
                 _nameCtrl.text = p['name'] ?? '';
                 _emailCtrl.text = p['email'] ?? '';
+                _birthday = p['birthday'] != null ? DateTime.tryParse(p['birthday']) : null;
+                _anniversary = p['anniversary'] != null ? DateTime.tryParse(p['anniversary']) : null;
               });
               setState(() => _editing = true);
             }),
@@ -102,6 +125,24 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 TextField(controller: _nameCtrl, style: const TextStyle(color: AppColors.ivory50), decoration: const InputDecoration(hintText: 'Full Name', labelText: 'Name', labelStyle: TextStyle(color: AppColors.gold500))),
                 const SizedBox(height: 12),
                 TextField(controller: _emailCtrl, style: const TextStyle(color: AppColors.ivory50), decoration: const InputDecoration(hintText: 'Email Address', labelText: 'Email', labelStyle: TextStyle(color: AppColors.gold500))),
+                const SizedBox(height: 12),
+                InkWell(
+                  onTap: () => _pickDate(true),
+                  borderRadius: BorderRadius.circular(12),
+                  child: InputDecorator(
+                    decoration: const InputDecoration(labelText: 'Birthday'),
+                    child: Text(_birthday != null ? _fmt(_birthday) : 'Select date', style: const TextStyle(color: AppColors.ivory50)),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                InkWell(
+                  onTap: () => _pickDate(false),
+                  borderRadius: BorderRadius.circular(12),
+                  child: InputDecorator(
+                    decoration: const InputDecoration(labelText: 'Anniversary'),
+                    child: Text(_anniversary != null ? _fmt(_anniversary) : 'Select date', style: const TextStyle(color: AppColors.ivory50)),
+                  ),
+                ),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _saving ? null : _save,
@@ -117,7 +158,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               _MenuItem(icon: Icons.receipt_long_outlined, label: 'Order History', onTap: () => context.go('/orders')),
               _MenuItem(icon: Icons.event_seat_outlined, label: 'My Reservations', onTap: () => context.go('/reservations')),
               _MenuItem(icon: Icons.stars_outlined, label: 'Loyalty & Rewards', onTap: () => context.go('/loyalty')),
+              _MenuItem(icon: Icons.favorite_border, label: 'Favorites', onTap: () => context.push('/favorites')),
               _MenuItem(icon: Icons.notifications_outlined, label: 'Notifications', onTap: () => context.push('/notifications')),
+              _MenuItem(icon: Icons.settings_outlined, label: 'Settings', onTap: () => context.push('/settings')),
               const SizedBox(height: 16),
               _MenuItem(icon: Icons.logout, label: 'Sign Out', onTap: _logout, danger: true),
             ],

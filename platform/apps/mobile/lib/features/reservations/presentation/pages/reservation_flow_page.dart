@@ -10,13 +10,139 @@ final availableTablesProvider = FutureProvider.family<List, Map<String, String>>
   return r.data as List;
 });
 
-class ReservationFlowPage extends ConsumerStatefulWidget {
+final myReservationsProvider = FutureProvider<List>((ref) async {
+  final r = await ref.read(dioProvider).get('/reservations/my');
+  return r.data as List;
+});
+
+class ReservationFlowPage extends StatefulWidget {
   const ReservationFlowPage({super.key});
   @override
-  ConsumerState<ReservationFlowPage> createState() => _ReservationFlowPageState();
+  State<ReservationFlowPage> createState() => _ReservationFlowPageWrapperState();
 }
 
-class _ReservationFlowPageState extends ConsumerState<ReservationFlowPage> {
+class _ReservationFlowPageWrapperState extends State<ReservationFlowPage> with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.green900,
+      appBar: AppBar(
+        title: const Text('Table Reservations'),
+        backgroundColor: AppColors.green900,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: AppColors.gold400,
+          labelColor: AppColors.gold300,
+          unselectedLabelColor: AppColors.gold600,
+          tabs: const [Tab(text: 'New Booking'), Tab(text: 'My Bookings')],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: const [_NewBookingFlow(), _MyBookingsTab()],
+      ),
+    );
+  }
+}
+
+class _MyBookingsTab extends ConsumerWidget {
+  const _MyBookingsTab();
+
+  Color _statusColor(String status) {
+    switch (status) {
+      case 'confirmed': return AppColors.gold400;
+      case 'checked_in': return Colors.lightGreenAccent;
+      case 'completed': return AppColors.ivory100;
+      case 'cancelled': case 'no_show': return Colors.redAccent;
+      default: return AppColors.gold500;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reservationsAsync = ref.watch(myReservationsProvider);
+    return RefreshIndicator(
+      color: AppColors.gold300,
+      backgroundColor: AppColors.green800,
+      onRefresh: () => ref.refresh(myReservationsProvider.future),
+      child: reservationsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator(color: AppColors.gold300)),
+        error: (e, _) => Center(child: Text('Failed to load: $e', style: const TextStyle(color: Colors.redAccent))),
+        data: (reservations) => reservations.isEmpty
+            ? ListView(children: const [
+                SizedBox(height: 120),
+                Center(child: Text('No reservations yet', style: TextStyle(color: AppColors.gold500))),
+              ])
+            : ListView.separated(
+                padding: const EdgeInsets.all(20),
+                itemCount: reservations.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (_, i) {
+                  final r = reservations[i] as Map;
+                  final status = (r['status'] ?? 'confirmed') as String;
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: AppColors.green800,
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: AppColors.green700),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 44, height: 44,
+                          decoration: BoxDecoration(color: AppColors.green700, borderRadius: BorderRadius.circular(10)),
+                          child: const Icon(Icons.event_seat, color: AppColors.gold400),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${r['reservation_date']} · ${r['reservation_time']}',
+                                  style: const TextStyle(color: AppColors.ivory50, fontWeight: FontWeight.w700, fontSize: 14)),
+                              const SizedBox(height: 4),
+                              Text('${r['guest_count']} guests', style: const TextStyle(color: AppColors.gold500, fontSize: 12)),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(color: _statusColor(status).withOpacity(0.15), borderRadius: BorderRadius.circular(20)),
+                          child: Text(status.toUpperCase().replaceAll('_', ' '),
+                              style: TextStyle(color: _statusColor(status), fontSize: 10, fontWeight: FontWeight.w700)),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+      ),
+    );
+  }
+}
+
+class _NewBookingFlow extends ConsumerStatefulWidget {
+  const _NewBookingFlow();
+  @override
+  ConsumerState<_NewBookingFlow> createState() => _ReservationFlowPageState();
+}
+
+class _ReservationFlowPageState extends ConsumerState<_NewBookingFlow> {
   int _step = 0;
   DateTime? _date;
   String? _time;
@@ -25,6 +151,13 @@ class _ReservationFlowPageState extends ConsumerState<ReservationFlowPage> {
   Map? _selectedTable;
   bool _submitting = false;
   bool _confirmed = false;
+  final _requestsCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    _requestsCtrl.dispose();
+    super.dispose();
+  }
 
   static const _steps = ['Date', 'Time', 'Guests', 'Seating', 'Table', 'Confirm'];
   static const _times = ['11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
@@ -44,6 +177,7 @@ class _ReservationFlowPageState extends ConsumerState<ReservationFlowPage> {
         'reservation_time': '${_time!}:00',
         'guest_count': _guests,
         'seating_type': _seatingValues[_seatings.indexOf(_seatingType!)],
+        if (_requestsCtrl.text.trim().isNotEmpty) 'special_requests': _requestsCtrl.text.trim(),
       });
       setState(() => _confirmed = true);
     } catch (e) {
@@ -55,44 +189,41 @@ class _ReservationFlowPageState extends ConsumerState<ReservationFlowPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_confirmed) return _ConfirmationScreen(date: _dateStr, time: _time!, guests: _guests, table: _selectedTable!, onDone: () { setState(() { _confirmed = false; _step = 0; _date = null; _time = null; _seatingType = null; _selectedTable = null; }); });
+    if (_confirmed) return _ConfirmationScreen(date: _dateStr, time: _time!, guests: _guests, table: _selectedTable!, onDone: () { setState(() { _confirmed = false; _step = 0; _date = null; _time = null; _seatingType = null; _selectedTable = null; _requestsCtrl.clear(); }); });
 
-    return Scaffold(
-      backgroundColor: AppColors.green900,
-      appBar: AppBar(
-        title: const Text('Reserve a Table'),
-        backgroundColor: AppColors.green900,
-        leading: _step > 0 ? IconButton(icon: const Icon(Icons.arrow_back), onPressed: () => setState(() => _step--)) : null,
-      ),
-      body: Column(
-        children: [
-          // Step indicator
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
-              children: List.generate(_steps.length, (i) => Expanded(
-                child: Row(children: [
-                  _StepDot(index: i, current: _step, label: _steps[i]),
-                  if (i < _steps.length - 1) Expanded(child: Container(height: 1, color: i < _step ? AppColors.gold500 : AppColors.green700)),
-                ]),
-              )),
-            ),
+    return Column(
+      children: [
+        if (_step > 0)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: IconButton(icon: const Icon(Icons.arrow_back, color: AppColors.ivory50), onPressed: () => setState(() => _step--)),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: [
-                _stepDate(),
-                _stepTime(),
-                _stepGuests(),
-                _stepSeating(),
-                _stepTable(),
-                _stepConfirm(),
-              ][_step],
-            ),
+        // Step indicator
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          child: Row(
+            children: List.generate(_steps.length, (i) => Expanded(
+              child: Row(children: [
+                _StepDot(index: i, current: _step, label: _steps[i]),
+                if (i < _steps.length - 1) Expanded(child: Container(height: 1, color: i < _step ? AppColors.gold500 : AppColors.green700)),
+              ]),
+            )),
           ),
-        ],
-      ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: [
+              _stepDate(),
+              _stepTime(),
+              _stepGuests(),
+              _stepSeating(),
+              _stepTable(),
+              _stepConfirm(),
+            ][_step],
+          ),
+        ),
+      ],
     );
   }
 
@@ -243,6 +374,16 @@ class _ReservationFlowPageState extends ConsumerState<ReservationFlowPage> {
           ['Table', 'Table ${_selectedTable?["table_number"] ?? ""}'],
           ['Advance Deposit', '₹200'],
         ]),
+        const SizedBox(height: 16),
+        TextField(
+          controller: _requestsCtrl,
+          maxLines: 3,
+          style: const TextStyle(color: AppColors.ivory50),
+          decoration: const InputDecoration(
+            labelText: 'Special requests (optional)',
+            hintText: 'Birthday setup, allergies, window seat, etc.',
+          ),
+        ),
         const Spacer(),
         ElevatedButton(
           onPressed: _submitting ? null : _submit,

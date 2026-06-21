@@ -76,4 +76,65 @@ class AppTheme {
       elevation: 0,
     ),
   );
+
+  static ThemeData get light => ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: AppColors.ivory50,
+    colorScheme: const ColorScheme.light(
+      primary:   AppColors.green800,
+      secondary: AppColors.gold600,
+      surface:   Colors.white,
+      background: AppColors.ivory50,
+      onPrimary: AppColors.ivory50,
+      onSurface: AppColors.ink900,
+    ),
+    fontFamily: 'WorkSans',
+    textTheme: const TextTheme(
+      displayLarge:  TextStyle(fontFamily: 'Fraunces', fontWeight: FontWeight.w900, color: AppColors.ink900),
+      displayMedium: TextStyle(fontFamily: 'Fraunces', fontWeight: FontWeight.w900, color: AppColors.ink900),
+      headlineLarge: TextStyle(fontFamily: 'Fraunces', fontWeight: FontWeight.w700, color: AppColors.ink900),
+      headlineMedium:TextStyle(fontFamily: 'Fraunces', fontWeight: FontWeight.w700, color: AppColors.ink900),
+      titleLarge:    TextStyle(color: AppColors.ink900, fontWeight: FontWeight.w600),
+      bodyLarge:     TextStyle(color: AppColors.ink900),
+      bodyMedium:    TextStyle(color: AppColors.ink900),
+      labelLarge:    TextStyle(color: AppColors.ivory50, fontWeight: FontWeight.w700),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.green800,
+        foregroundColor: AppColors.ivory50,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+        textStyle: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+      ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: AppColors.gold500.withOpacity(0.3))),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: AppColors.gold500.withOpacity(0.3))),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: AppColors.green800)),
+      hintStyle: TextStyle(color: AppColors.ink900.withOpacity(0.4), fontSize: 14),
+    ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: AppColors.ivory50,
+      foregroundColor: AppColors.ink900,
+      elevation: 0,
+      centerTitle: false,
+      titleTextStyle: TextStyle(fontFamily: 'Fraunces', fontWeight: FontWeight.w900, fontSize: 20, color: AppColors.ink900),
+    ),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Colors.white,
+      selectedItemColor: AppColors.green800,
+      unselectedItemColor: AppColors.gold600,
+      showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
+    ),
+    cardTheme: CardTheme(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+    ),
+  );
 }

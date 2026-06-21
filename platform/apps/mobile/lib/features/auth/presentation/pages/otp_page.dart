@@ -30,8 +30,11 @@ class _OtpPageState extends State<OtpPage> {
         verificationId: widget.verificationId,
         smsCode: _otpCtrl.text.trim(),
       );
-      await FirebaseAuth.instance.signInWithCredential(cred);
-      if (mounted) context.go('/home');
+      final result = await FirebaseAuth.instance.signInWithCredential(cred);
+      if (mounted) {
+        final isNewUser = result.additionalUserInfo?.isNewUser ?? false;
+        context.go(isNewUser ? '/auth/profile-setup' : '/home');
+      }
     } on FirebaseAuthException catch (e) {
       setState(() { _loading = false; _error = e.message; });
     }
