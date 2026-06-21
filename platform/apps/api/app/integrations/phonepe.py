@@ -1,4 +1,5 @@
 import hashlib
+import hmac
 import base64
 import json
 import uuid
@@ -67,7 +68,7 @@ def verify_webhook_checksum(x_verify_header: str, response_b64: str) -> bool:
     """Verify PhonePe webhook signature."""
     endpoint = "/pg/v1/status"
     expected = _compute_checksum(response_b64, endpoint, settings.phonepe_salt_key, settings.phonepe_salt_index)
-    return x_verify_header == expected
+    return hmac.compare_digest(x_verify_header, expected)
 
 
 async def check_payment_status(merchant_txn_id: str) -> dict:
